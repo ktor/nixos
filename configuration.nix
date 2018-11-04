@@ -112,6 +112,7 @@ extraModulePackages = [ config.boot.kernelPackages.broadcom_sta ];
     udiskie
     fuse_exfat
     exfat-utils
+    ntfs3g
     unzip
     viber
     vim
