@@ -110,6 +110,8 @@ extraModulePackages = [ config.boot.kernelPackages.broadcom_sta ];
     terminator
     tmux
     udiskie
+    fuse_exfat
+    exfat-utils
     unzip
     viber
     vim
@@ -210,6 +212,13 @@ users.extraUsers.ktor= {
   shell = "/run/current-system/sw/bin/bash";
 };
 
+# shell
+  programs.bash.enableCompletion = true;
+
+  # Show git info in bash prompt and display a colorful hostname if using ssh.
+  programs.bash.promptInit = ''
+    source ${pkgs.gitAndTools.gitFull}/share/git/contrib/completion/git-prompt.sh
+  '';
 
 ## SYSTEMD
 
