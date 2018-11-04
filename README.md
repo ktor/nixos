@@ -25,3 +25,5 @@ keybindings where possible.
 * instant messaging: skype, slack
 * xmonad + xmobar
 * mouse pointer hidden when not in use
+* office: libreoffice, pandoc for documents convertion, okular for doc viewing,
+  ledger/hledger for accounting
