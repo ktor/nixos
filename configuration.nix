@@ -12,6 +12,7 @@ let
     shotwell
   ];
   desktopUtilities = with pkgs; [
+    copyq
     flameshot
     feh
     compton
@@ -32,13 +33,31 @@ let
   gnomeAppsDependencies = with pkgs; [
     gnome3.dconf
   ];
+  haskellDevelopment = with pkgs; [
+    haskell.compiler.ghc844
+    stack
+    stack2nix
+  ];
   javaDevelopment = with pkgs; [
     visualvm
     maven
     jdk
     jmeter
   ];
-  allPackages = videoEditingPackages ++ photoEditingPackages ++ desktopUtilities ++ gnomeAppsDependencies ++ javaDevelopment;
+  fileSystemUtilities = with pkgs; [
+    srm
+    udiskie
+    fuse_exfat
+    exfat-utils
+    ntfs3g
+  ];
+  allPackages = videoEditingPackages
+  ++ photoEditingPackages
+  ++ desktopUtilities
+  ++ gnomeAppsDependencies
+  ++ javaDevelopment
+  ++ haskellDevelopment
+  ++ fileSystemUtilities;
 in
   {
     imports = [
@@ -81,44 +100,45 @@ extraModulePackages = [ config.boot.kernelPackages.broadcom_sta ];
   ];
 
 # Packages
-  nix = {
-    binaryCaches = ["https://cache.nixos.org/" "https://ktor.cachix.org" ];
-    binaryCachePublicKeys = [ "ktor.cachix.org-1:4LkNkLl+ZGXd4DOnch87MaErr+1J+PP7z3rnLxtekus=" ];
-    trustedUsers = [ "root" "ktor" ];
-  };
-  environment.systemPackages = with pkgs; [
-    acpitool
-    calibre
-    chromium
-    curl
-    dropbox-cli
-    firefoxWrapper
-    freemind
-    gitAndTools.gitFull
-    graphviz # for plantuml
-    hledger
-    keepass
-    ledger
-    libreoffice-fresh
-    libxml2
-    lm_sensors
-    p7zip
-    silver-searcher
-    skype
-    slack
-    soapui
-    terminator
-    tmux
-    udiskie
-    fuse_exfat
-    exfat-utils
-    ntfs3g
-    unzip
-    viber
-    vim
-    vlc
-    wget
-  ] ++ allPackages;
+nixpkgs.config = {
+  allowUnfree = true;
+  allowUnfreeRedistributable = true;
+};
+nix = {
+  binaryCaches = ["https://cache.nixos.org/" "https://ktor.cachix.org" ];
+  binaryCachePublicKeys = [ "ktor.cachix.org-1:4LkNkLl+ZGXd4DOnch87MaErr+1J+PP7z3rnLxtekus=" ];
+  trustedUsers = [ "root" "ktor" ];
+};
+
+environment.systemPackages = with pkgs; [
+  acpitool
+  calibre
+  chromium
+  curl
+  dropbox-cli
+  firefoxWrapper
+  freemind
+  gitAndTools.gitFull
+  graphviz # for plantuml
+  hledger
+  keepass
+  ledger
+  libreoffice-fresh
+  libxml2
+  lm_sensors
+  p7zip
+  silver-searcher
+  skype
+  slack
+  soapui
+  terminator
+  tmux
+  unzip
+  viber
+  vim
+  vlc
+  wget
+] ++ allPackages;
 
 ## SERVICES
 
@@ -174,11 +194,6 @@ desktopManager.xfce.enable = true;
 };
 
 
-nixpkgs.config = {
-  allowUnfree = true;
-  allowUnfreeRedistributable = true;
-};
-
 # Auto upgrade my system
 system.autoUpgrade.enable = true;
 
@@ -214,7 +229,7 @@ users.extraUsers.ktor= {
 };
 
 # shell
-  programs.bash.enableCompletion = true;
+programs.bash.enableCompletion = true;
 
   # Show git info in bash prompt and display a colorful hostname if using ssh.
   programs.bash.promptInit = ''
