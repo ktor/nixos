@@ -12,6 +12,9 @@ let
     shotwell
   ];
   desktopUtilities = with pkgs; [
+    gmrun
+    thunderbird
+    gtypist
     copyq
     stalonetray
     flameshot
@@ -149,8 +152,8 @@ in
 
     # backlight control on notebook
     programs.light.enable = true;
-    # backlight control on notebook
     services = {
+    # backlight control on notebook
       actkbd = {
         enable = true;
         bindings = [
@@ -158,13 +161,17 @@ in
           { keys = [ 225 ]; events = [ "key" ]; command = "/run/wrappers/bin/light -U 10"; }
         ];
       };
+
+      # activate autorandr on sleep
+      autorandr.enable = true;
+
       # Enable the OpenSSH server.
       # sshd.enable = true;
       locate.enable = true;
       printing.enable = true;
       acpid.enable = true;
 
-      redshift = {
+      redshift = { # limit blue light after sunset
         enable = true;
         latitude = "48.1";
         longitude = "17.1";
@@ -174,11 +181,11 @@ in
 
       xserver = {
         enable = true;
-        synaptics.enable = true;
+        synaptics.enable = true; # touchpad
 
       # Basic keymap, is used for i18n virtual consoles
       layout = "pl";
-      xkbOptions = "terminate:ctrl_alt_bksp, ctrl:nocaps";
+      xkbOptions = "terminate:ctrl_alt_bksp, ctrl:nocaps"; # ctrl instead of caps lock, ctrl alt backspace -> quit X
 
       windowManager.xmonad = {
         enable = true;
