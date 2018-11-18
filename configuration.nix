@@ -1,79 +1,10 @@
 { config, pkgs, ... }:
-let
-  videoEditingPackages = with pkgs; [
-    kdeApplications.kdenlive
-    ffmpeg-full
-    breeze-icons
-    frei0r
-  ];
-  photoEditingPackages = with pkgs; [
-    darktable
-    gimp
-    shotwell
-  ];
-  desktopUtilities = with pkgs; [
-    gmrun
-    thunderbird
-    gtypist
-    copyq
-    stalonetray
-    flameshot
-    feh
-    compton
-    xcape
-    unclutter-xfixes
-    xorg.xbacklight
-    xorg.xkbcomp
-    xsecurelock
-    dmenu
-    haskellPackages.xmobar
-    dunst
-    libnotify
-    networkmanagerapplet
-    pavucontrol
-    gnome3.gnome-session
-  ];
-  gnomeAppsDependencies = with pkgs; [
-    gnome3.dconf
-  ];
-  haskellDevelopment = with pkgs; [
-    haskell.compiler.ghc844
-    stack
-    stack2nix
-  ];
-  javaDevelopment = with pkgs; [
-    visualvm
-    maven
-    jdk
-    jmeter
-  ];
-  officeUtilities = with pkgs; [
-    hledger
-    kdeApplications.okular
-    ledger
-    libreoffice-fresh
-    pandoc
-  ];
-  fileSystemUtilities = with pkgs; [
-    exfat-utils
-    fuse_exfat
-    ntfs3g
-    srm
-    udiskie
-  ];
-  allPackages = videoEditingPackages
-  ++ photoEditingPackages
-  ++ desktopUtilities
-  ++ gnomeAppsDependencies
-  ++ javaDevelopment
-  ++ haskellDevelopment
-  ++ officeUtilities
-  ++ fileSystemUtilities;
-in
   {
     imports = [
       # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      ./keybase.nix
+      ./workstation-packages.nix
     ];
 
     boot = {
@@ -92,6 +23,7 @@ in
     };
     hardware.pulseaudio.enable = true;
     hardware.pulseaudio.package = pkgs.pulseaudioFull;
+    hardware.pulseaudio.support32Bit = true;
     hardware.pulseaudio.extraConfig = ''
       load-module module-switch-on-connect
     '';
@@ -121,39 +53,16 @@ in
       trustedUsers = [ "root" "ktor" ];
     };
 
-    environment.systemPackages = with pkgs; [
-      acpitool
-      calibre
-      chromium
-      curl
-      dropbox-cli
-      firefoxWrapper
-      freemind
-      gitAndTools.gitFull
-      graphviz # for plantuml
-      keepass
-      libxml2
-      lm_sensors
-      p7zip
-      silver-searcher
-      skype
-      slack
-      soapui
-      terminator
-      tmux
-      unzip
-      viber
-      vim
-      vlc
-      wget
-    ] ++ allPackages;
-
     ## SERVICES
 
     # backlight control on notebook
     programs.light.enable = true;
     services = {
-    # backlight control on notebook
+      # use 256 color terminal and true type fonts in console mode
+      kmscon.enable = true;
+      kmscon.extraConfig = ''font-name=Anonymice Powerline'';
+
+      # backlight control on notebook
       actkbd = {
         enable = true;
         bindings = [
@@ -179,9 +88,9 @@ in
         temperature.night = 3400;
       };
 
-      xserver = {
-        enable = true;
-        synaptics.enable = true; # touchpad
+    xserver = {
+      enable = true;
+      synaptics.enable = true; # touchpad
 
       # Basic keymap, is used for i18n virtual consoles
       layout = "pl";
@@ -202,8 +111,23 @@ in
       windowManager.default = "xmonad";
       desktopManager.xfce.enable = true;
 
+      displayManager.sessionCommands =
+        ''
+          # xcape to use CTRL as ESC when pressed alone
+          ${pkgs.xcape}xcape
+
+          # hide cursor after X seconds idle
+          ${pkgs.unclutter}unclutter -jitter=20
+
+          # download bing picture of a day and set as wallpaper with feh
+          /home/ktor/bin/wallpaper
+
+          # window shadows
+          ${pkgs.compton}compton -b --config /home/ktor/.compton.conf
+        '';
+
+      };
     };
-  };
 
 
     # Auto upgrade my system
@@ -215,7 +139,7 @@ in
     i18n = {
       consoleFont = "Lat2-Terminus16";
       consoleKeyMap = "pl";
-      defaultLocale = "pl_PL.UTF-8";
+      defaultLocale = "en_GB.UTF-8";
     };
 
     # Virtualization + containers
@@ -243,22 +167,12 @@ in
     # shell
     programs.bash.enableCompletion = true;
 
-      # Show git info in bash prompt and display a colorful hostname if using ssh.
-      programs.bash.promptInit = ''
-        source ${pkgs.gitAndTools.gitFull}/share/git/contrib/completion/git-prompt.sh
-      '';
+    # Show git info in bash prompt and display a colorful hostname if using ssh.
+    programs.bash.promptInit = ''
+      source ${pkgs.gitAndTools.gitFull}/share/git/contrib/completion/git-prompt.sh
+    '';
 
     ## SYSTEMD
-
-    systemd.user.services."xcape" = {
-      enable = true;
-      description = "xcape to use CTRL as ESC when pressed alone";
-      wantedBy = [ "default.target" ];
-      serviceConfig.Type = "forking";
-      serviceConfig.Restart = "always";
-      serviceConfig.RestartSec = 2;
-      serviceConfig.ExecStart = "${pkgs.xcape}/bin/xcape";
-    };
 
     systemd.user.services."dunst" = {
       enable = true;
@@ -266,25 +180,7 @@ in
       wantedBy = [ "default.target" ];
       serviceConfig.Restart = "always";
       serviceConfig.RestartSec = 2;
-      serviceConfig.ExecStart = "${pkgs.dunst}/bin/dunst";
-    };
-
-    systemd.user.services."wallpaper" = {
-      enable = true;
-      description = "download bing picture of a day and set as wallpaper with feh";
-      wantedBy = [ "default.target" ];
-      serviceConfig.Restart = "always";
-      serviceConfig.RestartSec = 2;
-      serviceConfig.ExecStart = "/home/ktor/bin/wallpaper";
-    };
-    
-    systemd.user.services."unclutter" = {
-      enable = true;
-      description = "hide cursor after X seconds idle";
-      wantedBy = [ "default.target" ];
-      serviceConfig.Restart = "always";
-      serviceConfig.RestartSec = 2;
-      serviceConfig.ExecStart = "${pkgs.unclutter}/bin/unclutter --timeout 1 --jitter=20 --ignore-scrolling";
+      serviceConfig.ExecStart = "${pkgs.dunst}/bin/dunst -follow keyboard -force_xinerama";
     };
 
     systemd.user.services."udiskie" = {
@@ -296,14 +192,4 @@ in
       serviceConfig.ExecStart = "${pkgs.udiskie}/bin/udiskie";
     };
 
-    systemd.user.services."compton" = {
-      enable = true;
-      description = "window shadows";
-      wantedBy = [ "default.target" ];
-      path = [ pkgs.compton ];
-      serviceConfig.Type = "forking";
-      serviceConfig.Restart = "always";
-      serviceConfig.RestartSec = 2;
-      serviceConfig.ExecStart = "${pkgs.compton}/bin/compton -b --config /home/ktor/.compton.conf";
-    };
   }
