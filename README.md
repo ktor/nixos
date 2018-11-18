@@ -21,9 +21,11 @@ keybindings where possible.
 * haskell development: ghc, stack, stack2nix, hie
 * virtualization: docker
 * binary caches (public, private)
-* cloud storage: dropbox
+* cloud storage: dropbox, keybase
 * instant messaging: skype, slack
 * xmonad + xmobar
 * mouse pointer hidden when not in use
 * office: libreoffice, pandoc for documents convertion, okular for doc viewing,
   ledger/hledger for accounting
+* security, encryption: keepass, keybase, gpg
+* email: thunderbird
