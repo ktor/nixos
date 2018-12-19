@@ -14,11 +14,13 @@ keybindings where possible.
 * video playback and editing: kdenlive, vlc
 * pulse audio and sound control: pavucontrol, amixer, alsamixer
 * notifications
-* networking: nmcli
+* networking: extraHosts, open ports for http,https and IPP/CUPS, telnet, nc
 * great coding fonts: anonymousPro, powerline-fonts
-* java development: maven, jdk, visualvm
+* java development: maven, gradle, oraclejdk, visualvm
 * perfomance testing: jmeter
 * haskell development: ghc, stack, stack2nix, hie
+* web development: nginx configuration for static pages, nodejs, yarn, node2nix
+* development: meld for visual diff
 * virtualization: docker
 * binary caches (public, private)
 * cloud storage: dropbox, keybase
@@ -27,5 +29,6 @@ keybindings where possible.
 * mouse pointer hidden when not in use
 * office: libreoffice, pandoc for documents convertion, okular for doc viewing,
   ledger/hledger for accounting
-* security, encryption: keepass, keybase, gpg
+* printing: popular cups drivers, nssmdns for printer discovery
+* security, encryption: keepass, keybase, gpg, custom trusted certificate
 * email: thunderbird
