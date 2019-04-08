@@ -12,6 +12,11 @@ let
     shotwell
   ];
   desktopUtilities = with pkgs; [
+    lxmenu-data
+    shared-mime-info
+    ark
+    recoll
+    jmtpfs
     nssmdns
     qt4
     syncthing
@@ -40,17 +45,12 @@ let
     pavucontrol
   ];
   gnomeAppsDependencies = with pkgs; [
-    gnome3.gnome-control-center
-    gnome3.gnome-documents
-    gnome3.gnome-documents
-    gnome3.gnome-photos
-    gnome3.gnome-music
-    gnome3.nautilus
+    gnome3.gnome-keyring
     gnome3.dconf
   ];
   developmentUtilities = with pkgs; [
     gnome3.meld
-    telnet
+    # telnet
     docker_compose
     highlight
     gitAndTools.gitFull
@@ -105,6 +105,8 @@ let
   ++ fileSystemUtilities;
 in {
   environment.systemPackages = with pkgs; [
+    telnet
+    ripgrep
     gnupg
     file
     acpitool
