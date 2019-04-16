@@ -49,6 +49,7 @@ let
     gnome3.dconf
   ];
   developmentUtilities = with pkgs; [
+    go
     gnome3.meld
     # telnet
     docker_compose
@@ -105,6 +106,7 @@ let
   ++ fileSystemUtilities;
 in {
   environment.systemPackages = with pkgs; [
+    hstr
     telnet
     ripgrep
     gnupg
