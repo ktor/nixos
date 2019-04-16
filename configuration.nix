@@ -7,6 +7,7 @@
       ./workstation-packages.nix
       ./jdk.nix
       ./o2-pki.nix
+      ./mysql.nix
       # ./kuba.nix
       # ./static-blog.nix
     ];
