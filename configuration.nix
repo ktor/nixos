@@ -8,6 +8,7 @@
       ./jdk.nix
       ./o2-pki.nix
       ./mysql.nix
+      ./suspend.nix
       # ./kuba.nix
       # ./static-blog.nix
     ];
@@ -93,6 +94,7 @@
     # backlight control on notebook
     programs.light.enable = true;
     services = {
+      batteryNotifier.enable = true; # see suspend.nix
       localtime.enable = true;
       syncthing = {
         enable = true;
