@@ -12,6 +12,7 @@ let
     shotwell
   ];
   desktopUtilities = with pkgs; [
+    acpilight
     lxmenu-data
     shared-mime-info
     ark
@@ -34,7 +35,6 @@ let
     compton
     xcape
     unclutter-xfixes
-    xorg.xbacklight
     xorg.xkbcomp
     xsecurelock
     dmenu

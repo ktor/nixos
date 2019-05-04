@@ -226,7 +226,7 @@
       isNormalUser = true;
       group = "users";
       uid = 1000;
-      extraGroups = [ "wheel" "networkmanager" "docker" ];
+      extraGroups = [ "wheel" "networkmanager" "docker" "video" ];
       createHome = true;
       home = "/home/ktor";
       shell = "/run/current-system/sw/bin/bash";
