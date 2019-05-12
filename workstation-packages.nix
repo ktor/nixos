@@ -71,8 +71,6 @@ let
   javaDevelopment = with pkgs; [
     gradle
     gradle-completion
-    visualvm
-    oraclejdk
     jmeter
   ];
   frontendDevelopment = with pkgs; [
@@ -129,7 +127,7 @@ in {
     slack
     terminator
     unzip
-    viber
+    # viber stopped working
     vlc
   ] ++ allPackages;
 }

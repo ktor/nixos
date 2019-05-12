@@ -80,8 +80,6 @@
     nixpkgs.config = {
       allowUnfree = true;
       allowUnfreeRedistributable = true;
-      oraclejdk.accept_license = true;
-      oraclejdk.pluginSupport = true;
     };
     nix = {
       binaryCaches = ["https://cache.nixos.org/" "https://ktor.cachix.org" ];
@@ -93,6 +91,7 @@
 
     # backlight control on notebook
     programs.light.enable = true;
+
     services = {
       batteryNotifier.enable = true; # see suspend.nix
       localtime.enable = true;
