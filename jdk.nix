@@ -3,8 +3,8 @@
 
   environment.systemPackages = with pkgs; [
     visualvm
-    # oraclejdk
     jdk
+    jdk11
   ];
 
   nixpkgs.config = {
