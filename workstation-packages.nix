@@ -135,6 +135,7 @@ in {
     irssi
     slack
     terminator
+    alacritty
     unzip
     # viber stopped working
     vlc
