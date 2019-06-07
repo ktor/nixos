@@ -113,6 +113,8 @@ let
   ++ fileSystemUtilities;
 in {
   environment.systemPackages = with pkgs; [
+    bat
+    alacritty
     hstr
     telnet
     ripgrep
@@ -135,7 +137,6 @@ in {
     irssi
     slack
     terminator
-    alacritty
     unzip
     # viber stopped working
     vlc
