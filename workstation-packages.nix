@@ -49,6 +49,11 @@ let
     gnome3.dconf
   ];
   developmentUtilities = with pkgs; [
+    gcc
+    automake
+    autoconf
+    python3
+    python37Packages.requests
     go
     gnome3.meld
     # telnet
@@ -67,6 +72,7 @@ let
     haskell.compiler.ghc844
     stack
     stack2nix
+    cabal-install
   ];
   javaDevelopment = with pkgs; [
     gradle
@@ -79,6 +85,9 @@ let
     yarn
   ];
   officeUtilities = with pkgs; [
+    aspellDicts.ru
+    aspellDicts.pl
+    aspellDicts.sk
     hledger
     kdeApplications.okular
     ledger
