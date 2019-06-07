@@ -35,16 +35,16 @@
       };
       extraHosts =
         ''
-        127.0.0.1 lukreo.pl
-        127.0.0.1 www.lukreo.pl
-        127.0.0.1 moje.lukreo.pl
-        127.0.0.1 www.sk.o2
-        127.0.0.1 o2static.sk.o2
-        127.0.0.1 local.sk.o2
-        127.0.0.1 local.o2static.sk.o2
-        127.0.0.1 asistent.sk.o2
-        127.0.0.1 local.asistent.sk.o2
-        127.0.0.1 eshop.tescomobile.sk.o2
+          127.0.0.1 lukreo.pl
+          127.0.0.1 www.lukreo.pl
+          127.0.0.1 moje.lukreo.pl
+          127.0.0.1 www.sk.o2
+          127.0.0.1 o2static.sk.o2
+          127.0.0.1 local.sk.o2
+          127.0.0.1 local.o2static.sk.o2
+          127.0.0.1 asistent.sk.o2
+          127.0.0.1 local.asistent.sk.o2
+          127.0.0.1 eshop.tescomobile.sk.o2
 
           #DEV prostredie
           10.42.11.13     lxeportdev201 dev.o2.sk
@@ -85,6 +85,7 @@
       binaryCaches = ["https://cache.nixos.org/" "https://ktor.cachix.org" ];
       binaryCachePublicKeys = [ "ktor.cachix.org-1:4LkNkLl+ZGXd4DOnch87MaErr+1J+PP7z3rnLxtekus=" ];
       trustedUsers = [ "root" "ktor" ];
+      useSandbox = true;
     };
 
     ## SERVICES
