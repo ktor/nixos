@@ -17,7 +17,7 @@ let
     shared-mime-info
     ark
     recoll
-    jmtpfs
+    jmtpfs # mount android phone as block device
     nssmdns
     qt4
     syncthing
@@ -26,7 +26,6 @@ let
     # steam
     gmrun
     thunderbird
-    gtypist
     copyq
     stalonetray
     # flameshot version 5.11.1 doesn't work
@@ -39,8 +38,8 @@ let
     xsecurelock
     dmenu
     haskellPackages.xmobar
-    dunst
-    libnotify
+    dunst # lightweight notifications
+    libnotify # lightweight notifications
     networkmanagerapplet
     pavucontrol
   ];
@@ -52,6 +51,7 @@ let
     gcc
     automake
     autoconf
+    python
     python3
     python37Packages.requests
     go
@@ -124,6 +124,7 @@ in {
     powertop
     calibre
     chromium
+    google-chrome
     dropbox-cli
     firefoxWrapper
     freemind
