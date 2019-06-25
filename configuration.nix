@@ -6,7 +6,7 @@
       ./keybase.nix
       ./workstation-packages.nix
       ./jdk.nix
-      ./o2-pki.nix
+      ./pki.nix
       ./mysql.nix
       ./suspend.nix
       # ./kuba.nix
