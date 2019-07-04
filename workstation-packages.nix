@@ -48,12 +48,14 @@ let
     gnome3.dconf
   ];
   developmentUtilities = with pkgs; [
+    ctags
     gcc
     automake
     autoconf
     python
+    python27Packages.pip
+    python27Packages.virtualenv
     python3
-    python37Packages.requests
     go
     gnome3.meld
     # telnet
