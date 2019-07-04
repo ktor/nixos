@@ -45,13 +45,8 @@
           127.0.0.1 asistent.sk.o2
           127.0.0.1 local.asistent.sk.o2
           127.0.0.1 eshop.tescomobile.sk.o2
+          10.198.48.111 devlab.sk.o2
 
-          #DEV prostredie
-          10.42.11.13     lxeportdev201 dev.o2.sk
-          10.42.192.12    lxeportdev301
-          10.42.192.13    lxeportdev302
-          10.42.128.141   lxeportdev401
-          10.42.128.107   lxeportdev402
         '';
       };
 
