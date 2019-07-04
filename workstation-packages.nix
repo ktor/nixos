@@ -116,6 +116,7 @@ let
   ++ fileSystemUtilities;
 in {
   environment.systemPackages = with pkgs; [
+    fswatch
     bat
     alacritty
     hstr
