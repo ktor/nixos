@@ -87,6 +87,7 @@ let
     yarn
   ];
   officeUtilities = with pkgs; [
+    msgviewer
     aspellDicts.ru
     aspellDicts.pl
     aspellDicts.sk
