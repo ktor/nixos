@@ -14,13 +14,7 @@
     ];
 
     boot = {
-      loader.grub.device = "/dev/sdb";   # (for BIOS systems only)
-
-      # HP Probook 640 G1 networking
-      initrd.kernelModules = [ "wl" ];
-
-      kernelModules = [ "kvm-intel" "wl" ];
-      extraModulePackages = [ config.boot.kernelPackages.broadcom_sta ];
+      loader.systemd-boot.enable = true; # (for UEFI systems only)
     };
 
     swapDevices = [ { device = "/dev/disk/by-label/swap"; } ];
