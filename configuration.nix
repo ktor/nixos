@@ -45,8 +45,6 @@
           127.0.0.1 asistent.sk.o2
           127.0.0.1 local.asistent.sk.o2
           127.0.0.1 eshop.tescomobile.sk.o2
-          10.198.48.111 devlab.sk.o2
-
         '';
       };
 

@@ -1,5 +1,12 @@
 { config, pkgs, ... }:
 let
+  my-python3-packages = python37Packages: with python37Packages; [
+    pip
+    virtualenv
+    lxml
+    pyyaml
+  ];
+  python3-with-my-packages = pkgs.python3.withPackages my-python3-packages;
   videoEditingPackages = with pkgs; [
     kdeApplications.kdenlive
     ffmpeg-full
@@ -48,14 +55,14 @@ let
     gnome3.dconf
   ];
   developmentUtilities = with pkgs; [
+    tig
+    mitmproxy
     ctags
     gcc
     automake
     autoconf
     python
-    python27Packages.pip
-    python27Packages.virtualenv
-    python3
+    python3-with-my-packages
     go
     gnome3.meld
     # telnet
@@ -110,7 +117,7 @@ let
   ++ gnomeAppsDependencies
   ++ developmentUtilities
   ++ javaDevelopment
-  ++ frontendDevelopment 
+  ++ frontendDevelopment
   ++ haskellDevelopment
   ++ officeUtilities
   ++ fileSystemUtilities;
