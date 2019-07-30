@@ -55,6 +55,7 @@ let
     gnome3.dconf
   ];
   developmentUtilities = with pkgs; [
+    asciidoctor
     tig
     mitmproxy
     ctags
