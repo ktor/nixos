@@ -7,61 +7,62 @@
       ./workstation-packages.nix
       ./jdk.nix
       ./pki.nix
-      ./mysql.nix
       ./suspend.nix
-      # ./kuba.nix
-      # ./static-blog.nix
     ];
 
     boot = {
       loader.systemd-boot.enable = true; # (for UEFI systems only)
-    };
-
-    swapDevices = [ { device = "/dev/disk/by-label/swap"; } ];
-
-    networking = {
-      networkmanager.enable = true;
-      hostName = "probook";
-
-      firewall = {
-        allowedTCPPorts = [ 80 443 631 ];
-        allowedUDPPorts = [ 631 ];
+      kernel.sysctl =
+        {
+          "vm.max_map_count" = 262144;
+        };
       };
-      extraHosts =
-        ''
-          127.0.0.1 lukreo.pl
-          127.0.0.1 www.lukreo.pl
-          127.0.0.1 moje.lukreo.pl
-          127.0.0.1 www.sk.o2
-          127.0.0.1 o2static.sk.o2
-          127.0.0.1 local.sk.o2
-          127.0.0.1 local.o2static.sk.o2
-          127.0.0.1 asistent.sk.o2
-          127.0.0.1 local.asistent.sk.o2
-          127.0.0.1 eshop.tescomobile.sk.o2
+
+      swapDevices = [ { device = "/dev/disk/by-label/swap"; } ];
+
+      networking = {
+        networkmanager.enable = true;
+        hostName = "probook";
+
+        firewall = {
+          allowedTCPPorts = [ 80 443 631 ];
+          allowedUDPPorts = [ 631 ];
+        };
+        extraHosts =
+          ''
+            127.0.0.1 lukreo.pl
+            127.0.0.1 www.lukreo.pl
+            127.0.0.1 moje.lukreo.pl
+            127.0.0.1 www.sk.o2
+            127.0.0.1 o2static.sk.o2
+            127.0.0.1 local.sk.o2
+            127.0.0.1 local.o2static.sk.o2
+            127.0.0.1 asistent.sk.o2
+            127.0.0.1 local.asistent.sk.o2
+            127.0.0.1 eshop.tescomobile.sk.o2
+          '';
+        };
+
+        hardware.pulseaudio.enable = true;
+        hardware.pulseaudio.package = pkgs.pulseaudioFull;
+        hardware.pulseaudio.support32Bit = true;
+        hardware.pulseaudio.extraConfig = ''
+          load-module module-switch-on-connect
         '';
-      };
 
-      hardware.pulseaudio.enable = true;
-      hardware.pulseaudio.package = pkgs.pulseaudioFull;
-      hardware.pulseaudio.support32Bit = true;
-      hardware.pulseaudio.extraConfig = ''
-        load-module module-switch-on-connect
-      '';
+        hardware.opengl = {
+          driSupport = true;
+          driSupport32Bit = true;
+        };
 
-      hardware.opengl = {
-        driSupport = true;
-        driSupport32Bit = true;
-      };
-
-      powerManagement.enable = true;
+        powerManagement.enable = true;
 
 
-      fonts.fonts = with pkgs; [
-        anonymousPro
-        powerline-fonts
-        corefonts
-      ];
+        fonts.fonts = with pkgs; [
+          anonymousPro
+          powerline-fonts
+          corefonts
+        ];
 
     # Packages
     nixpkgs.config = {
