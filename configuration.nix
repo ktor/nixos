@@ -30,9 +30,6 @@
         };
         extraHosts =
           ''
-            127.0.0.1 lukreo.pl
-            127.0.0.1 www.lukreo.pl
-            127.0.0.1 moje.lukreo.pl
             127.0.0.1 www.sk.o2
             127.0.0.1 o2static.sk.o2
             127.0.0.1 local.sk.o2
