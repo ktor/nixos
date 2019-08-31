@@ -1,0 +1,14 @@
+= NixOS
+
+My NixOS workstation config, used on HP Probook. Optimized for heavy keyboard use with vim
+keybindings where possible.
+
+== Usage
+
+Work and personal computing:
+
+* Java development
+* Organizing information and knowledge
+* Document indexing and search
+* Photo/video management
+* Internet browsing and communication
