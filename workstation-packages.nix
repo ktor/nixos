@@ -1,5 +1,8 @@
 { config, pkgs, ... }:
 let
+  unstable = import <unstable> {
+    config = config.nixpkgs.config;
+  };
   my-python3-packages = python37Packages: with python37Packages; [
     pip
     virtualenv
@@ -8,7 +11,7 @@ let
   ];
   python3-with-my-packages = pkgs.python3.withPackages my-python3-packages;
   videoEditingPackages = with pkgs; [
-    kdeApplications.kdenlive
+    openshot-qt
     ffmpeg-full
     breeze-icons
     frei0r
@@ -100,7 +103,7 @@ let
     aspellDicts.pl
     aspellDicts.sk
     hledger
-    kdeApplications.okular
+    qpdfview
     ledger
     libreoffice-fresh
     pandoc
@@ -153,5 +156,6 @@ in {
     unzip
     # viber stopped working
     vlc
+    unstable.jetbrains.idea-ultimate
   ] ++ allPackages;
 }

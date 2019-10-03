@@ -103,8 +103,6 @@
       # activate autorandr on sleep
       autorandr.enable = true;
 
-      gnome3.tracker.enable = true;
-
       # visual sugar
       compton = {
         enable          = true;
@@ -127,7 +125,6 @@
       avahi.enable = true;
       avahi.publish.enable = true;
       avahi.publish.userServices = true;
-
 
       # Enable the OpenSSH server.
       # sshd.enable = true;
@@ -165,9 +162,7 @@
       windowManager.default = "xmonad";
       desktopManager = {
         xterm.enable = false;
-        gnome3.enable = false;
         lxqt.enable = true;
-        default = "lxqt";
       };
 
     };
@@ -200,6 +195,7 @@
       };
       pam = {
         services.lightdm.enableGnomeKeyring = true; # unlock gnome keyring upon login with lightdm
+        services.lightdm.enableKwallet = true; # unlock gnome keyring upon login with lightdm
         loginLimits =[
           { domain = "*"; item = "nofile"; type = "-"; value = "999999"; }
         ];
