@@ -10,103 +10,120 @@ let
     pyyaml
   ];
   python3-with-my-packages = pkgs.python3.withPackages my-python3-packages;
-  videoEditingPackages = with pkgs; [
-    openshot-qt
-    ffmpeg-full
-    breeze-icons
-    frei0r
+  video= with pkgs; [
+    unstable.breeze-icons
+    unstable.ffmpeg-full
+    unstable.frei0r
+    unstable.openshot-qt
+    unstable.vlc
   ];
-  photoEditingPackages = with pkgs; [
-    darktable
-    gimp
-    shotwell
+  photo= with pkgs; [
+    unstable.darktable
+    unstable.gimp
+    unstable.shotwell
   ];
-  desktopUtilities = with pkgs; [
-    acpilight
-    lxmenu-data
-    shared-mime-info
-    ark
-    recoll
-    jmtpfs # mount android phone as block device
-    nssmdns
-    qt4
-    syncthing
-    keybase
-    keybase-gui
-    # steam
-    gmrun
-    thunderbird
-    copyq
-    stalonetray
-    # flameshot version 5.11.1 doesn't work
-    shutter
-    feh
-    compton
-    xcape
-    unclutter-xfixes
-    xorg.xkbcomp
-    xsecurelock
-    dmenu
-    haskellPackages.xmobar
-    dunst # lightweight notifications
-    libnotify # lightweight notifications
+  archiving=with pkgs; [
+    unstable.ark
+    unstable.dropbox-cli
+    unstable.p7zip
+    unstable.syncthing
+    unstable.recoll
+    unstable.unzip
+  ];
+  security=with pkgs;[
+    unstable.libsecret
+    unstable.gnupg
+    unstable.keepass
+    unstable.keybase
+    unstable.keybase-gui
+    unstable.xdotool # for keepass autotype
+    unstable.xsecurelock
+  ];
+  mail=with pkgs;[
+    unstable.msgviewer
+    unstable.thunderbird
+    unstable.gnome3.evolution
+  ];
+  notifications=with pkgs;[
     networkmanagerapplet
+    unstable.dunst # lightweight notifications
+    unstable.libnotify # lightweight notifications
+    unstable.stalonetray
+  ];
+  desktop= with pkgs; [
+    acpilight
+    compton
+    dmenu
+    gmrun
+    haskellPackages.xmobar
+    jmtpfs # mount android phone as block device
+    lxmenu-data
+    nssmdns
     pavucontrol
+    unstable.qt4
+    shared-mime-info
+    unclutter-xfixes
+    unstable.feh
+    unstable.shutter
+    xcape
+    xorg.xkbcomp
   ];
   gnomeAppsDependencies = with pkgs; [
-    gnome3.gnome-keyring
-    gnome3.dconf
+    unstable.gnome3.gnome-keyring
+    unstable.gnome3.seahorse
+    unstable.gnome3.dconf
   ];
-  developmentUtilities = with pkgs; [
-    asciidoctor
-    tig
-    mitmproxy
-    ctags
+  development= with pkgs; [
+    unstable.bcompare
+    unstable.jetbrains.idea-ultimate
+    unstable.asciidoctor
+    unstable.mitmproxy
+    unstable.ctags
     gcc
     automake
     autoconf
     python
     python3-with-my-packages
     go
-    gnome3.meld
     # telnet
     docker_compose
-    highlight
     gitAndTools.gitFull
-    soapui
-    wget
-    openssl
-    curl
-    silver-searcher
-    tmux
-    vimHugeX
   ];
-  haskellDevelopment = with pkgs; [
+  web= with pkgs;[
+    unstable.chromium
+    unstable.google-chrome
+    unstable.wget
+    unstable.openssl
+    unstable.curl
+  ];
+  haskellStuff= with pkgs; [
     haskell.compiler.ghc844
     stack
     stack2nix
     cabal-install
   ];
-  javaDevelopment = with pkgs; [
-    gradle
-    gradle-completion
-    jmeter
+  java= with pkgs; [
+    unstable.gradle
+    unstable.gradle-completion
+    unstable.jmeter
   ];
-  frontendDevelopment = with pkgs; [
+  frontend= with pkgs; [
     nodePackages.node2nix
     nodejs
     yarn
   ];
-  officeUtilities = with pkgs; [
-    msgviewer
-    aspellDicts.ru
-    aspellDicts.pl
-    aspellDicts.sk
-    hledger
-    qpdfview
-    ledger
-    libreoffice-fresh
-    pandoc
+  office= with pkgs; [
+    copyq
+    unstable.freemind
+    unstable.calibre
+    unstable.aspellDicts.ru
+    unstable.aspellDicts.pl
+    unstable.aspellDicts.sk
+    unstable.hledger
+    unstable.qpdfview
+    unstable.ledger
+    unstable.libreoffice-fresh
+    unstable.pandoc
   ];
   fileSystemUtilities = with pkgs; [
     exfat-utils
@@ -115,47 +132,51 @@ let
     srm
     udiskie
   ];
-  allPackages = videoEditingPackages
-  ++ photoEditingPackages
-  ++ desktopUtilities
-  ++ gnomeAppsDependencies
-  ++ developmentUtilities
-  ++ javaDevelopment
-  ++ frontendDevelopment
-  ++ haskellDevelopment
-  ++ officeUtilities
-  ++ fileSystemUtilities;
+  chat=with pkgs; [
+    unstable.skype
+    unstable.slack
+    unstable.irssi
+  ];
+  cli=with pkgs; [
+    unstable.alacritty
+    unstable.bat
+    unstable.highlight
+    unstable.hstr
+    unstable.ripgrep
+    unstable.tig
+    unstable.tmux
+    unstable.vimHugeX
+  ];
+  network=with pkgs; [
+    unstable.soapui
+    unstable.telnet
+  ];
+  allPackages = archiving
+    ++ chat
+    ++ cli
+    ++ desktop
+    ++ development
+    ++ fileSystemUtilities
+    ++ frontend
+    ++ gnomeAppsDependencies
+    ++ haskellStuff
+    ++ java
+    ++ mail
+    ++ network
+    ++ notifications
+    ++ office
+    ++ photo
+    ++ security
+    ++ video
+    ++ web;
 in {
   environment.systemPackages = with pkgs; [
     fswatch
-    bat
-    alacritty
-    hstr
-    telnet
-    ripgrep
-    gnupg
     file
     acpitool
     powertop
-    calibre
-    chromium
-    google-chrome
-    dropbox-cli
-    firefoxWrapper
-    freemind
     graphviz # for plantuml
-    keepass
-    xdotool # for keepass autotype
     libxml2
     lm_sensors
-    p7zip
-    skype
-    irssi
-    slack
-    terminator
-    unzip
-    # viber stopped working
-    vlc
-    unstable.jetbrains.idea-ultimate
   ] ++ allPackages;
 }
