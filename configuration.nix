@@ -157,15 +157,16 @@
         ];
       };
 
-
       displayManager.lightdm.enable = true;
       windowManager.default = "xmonad";
       desktopManager = {
+        default = "none";
         xterm.enable = false;
-        lxqt.enable = true;
       };
 
     };
+    gnome3.gnome-keyring.enable = true;
+    dbus.packages = with pkgs; [ gnome3.dconf gnome2.GConf ];
   };
 
 
@@ -207,7 +208,7 @@
       isNormalUser = true;
       group = "users";
       uid = 1000;
-      extraGroups = [ "wheel" "networkmanager" "docker" "video" ];
+      extraGroups = [ "autologin" "wheel" "networkmanager" "docker" "video" ];
       createHome = true;
       home = "/home/ktor";
       shell = "/run/current-system/sw/bin/bash";
@@ -220,6 +221,8 @@
     programs.bash.promptInit = ''
       source ${pkgs.gitAndTools.gitFull}/share/git/contrib/completion/git-prompt.sh
     '';
+
+    programs.dconf.enable = true;
 
     ## SYSTEMD
 
