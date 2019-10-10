@@ -3,6 +3,9 @@ let
   unstable = import <unstable> {
     config = config.nixpkgs.config;
   };
+  previous = import <previous> {
+    config = config.nixpkgs.config;
+  };
   my-python3-packages = python37Packages: with python37Packages; [
     pip
     virtualenv
@@ -34,8 +37,8 @@ let
     unstable.libsecret
     unstable.gnupg
     unstable.keepass
-    unstable.keybase
-    unstable.keybase-gui
+    keybase
+    keybase-gui
     unstable.xdotool # for keepass autotype
     unstable.xsecurelock
   ];
@@ -60,7 +63,6 @@ let
     lxmenu-data
     nssmdns
     pavucontrol
-    unstable.qt4
     shared-mime-info
     unclutter-xfixes
     unstable.feh
@@ -87,7 +89,7 @@ let
     go
     # telnet
     docker_compose
-    gitAndTools.gitFull
+    unstable.gitAndTools.gitFull
   ];
   web= with pkgs;[
     unstable.chromium
@@ -99,7 +101,7 @@ let
   haskellStuff= with pkgs; [
     haskell.compiler.ghc844
     stack
-    stack2nix
+    # stack2nix - marked as broken
     cabal-install
   ];
   java= with pkgs; [
@@ -113,7 +115,7 @@ let
     yarn
   ];
   office= with pkgs; [
-    copyq
+    previous.copyq
     unstable.freemind
     unstable.calibre
     unstable.aspellDicts.ru
@@ -146,6 +148,7 @@ let
     unstable.tig
     unstable.tmux
     unstable.vimHugeX
+    unstable.tree
   ];
   network=with pkgs; [
     unstable.soapui
