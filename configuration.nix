@@ -12,11 +12,14 @@
 
     boot = {
       loader.systemd-boot.enable = true; # (for UEFI systems only)
+
       kernel.sysctl =
         {
           "vm.max_map_count" = 262144;
         };
       };
+
+      fileSystems."/boot".device = "/dev/disk/by-label/boot";
 
       swapDevices = [ { device = "/dev/disk/by-label/swap"; } ];
 
@@ -78,6 +81,11 @@
     # backlight control on notebook
     programs.light.enable = true;
 
+    location = {
+      latitude = 48.1;
+      longitude = 17.1;
+    };
+
     services = {
       batteryNotifier.enable = true; # see suspend.nix
       localtime.enable = true;
@@ -133,8 +141,6 @@
 
       redshift = { # limit blue light after sunset
       enable = true;
-      latitude = "48.1";
-      longitude = "17.1";
       temperature.day = 6500;
       temperature.night = 3400;
     };
