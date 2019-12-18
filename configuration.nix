@@ -13,13 +13,17 @@
     boot = {
       loader.systemd-boot.enable = true; # (for UEFI systems only)
 
-      kernel.sysctl =
-        {
+      kernel.sysctl = {
           "vm.max_map_count" = 262144;
         };
       };
 
       fileSystems."/boot".device = "/dev/disk/by-label/boot";
+      fileSystems."/home/ktor/development" = {
+        fsType = "ext4";
+        device = "/dev/disk/by-label/development";
+        options = ["rw" "user" "exec"];
+      };
 
       swapDevices = [ { device = "/dev/disk/by-label/swap"; } ];
 
@@ -42,6 +46,8 @@
             127.0.0.1 eshop.tescomobile.sk.o2
           '';
         };
+
+        hardware.bluetooth.enable = true;
 
         hardware.pulseaudio.enable = true;
         hardware.pulseaudio.package = pkgs.pulseaudioFull;
@@ -87,6 +93,7 @@
     };
 
     services = {
+      blueman.enable = true;
       batteryNotifier.enable = true; # see suspend.nix
       localtime.enable = true;
       syncthing = {

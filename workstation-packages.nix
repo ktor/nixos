@@ -11,6 +11,7 @@ let
     virtualenv
     lxml
     pyyaml
+    pygments
   ];
   python3-with-my-packages = pkgs.python3.withPackages my-python3-packages;
   video= with pkgs; [
@@ -66,7 +67,7 @@ let
     shared-mime-info
     unclutter-xfixes
     unstable.feh
-    unstable.shutter
+    shutter
     xcape
     xorg.xkbcomp
   ];
@@ -90,6 +91,7 @@ let
     # telnet
     docker_compose
     unstable.gitAndTools.gitFull
+    unstable.git-lfs
   ];
   web= with pkgs;[
     unstable.chromium
@@ -122,7 +124,7 @@ let
     unstable.aspellDicts.pl
     unstable.aspellDicts.sk
     unstable.hledger
-    unstable.qpdfview
+    qpdfview
     unstable.ledger
     unstable.libreoffice-fresh
     unstable.pandoc
@@ -140,6 +142,10 @@ let
     unstable.irssi
   ];
   cli=with pkgs; [
+    unstable.fzf
+    unstable.htop
+    unstable.powertop
+    unstable.jq
     unstable.alacritty
     unstable.bat
     unstable.highlight
@@ -177,7 +183,6 @@ in {
     fswatch
     file
     acpitool
-    powertop
     graphviz # for plantuml
     libxml2
     lm_sensors
