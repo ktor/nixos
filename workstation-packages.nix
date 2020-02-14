@@ -42,10 +42,11 @@ let
     keybase-gui
     unstable.xdotool # for keepass autotype
     unstable.xsecurelock
+    unstable.protonvpn-cli
   ];
   mail=with pkgs;[
     unstable.msgviewer
-    unstable.thunderbird
+    previous.thunderbird
     unstable.gnome3.evolution
   ];
   notifications=with pkgs;[
@@ -55,6 +56,7 @@ let
     unstable.stalonetray
   ];
   desktop= with pkgs; [
+    xsel
     acpilight
     compton
     dmenu
@@ -80,7 +82,7 @@ let
     unstable.bcompare
     unstable.jetbrains.idea-ultimate
     unstable.asciidoctor
-    unstable.mitmproxy
+    unstable.charles
     unstable.ctags
     gcc
     automake
@@ -96,6 +98,7 @@ let
   web= with pkgs;[
     unstable.chromium
     unstable.google-chrome
+    unstable.firefox
     unstable.wget
     unstable.openssl
     unstable.curl
