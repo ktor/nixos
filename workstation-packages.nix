@@ -89,6 +89,7 @@ let
     autoconf
     python
     python3-with-my-packages
+    unstable.groovy
     go
     # telnet
     docker_compose
