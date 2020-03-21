@@ -37,13 +37,7 @@
         };
         extraHosts =
           ''
-            127.0.0.1 www.sk.o2
-            127.0.0.1 o2static.sk.o2
-            127.0.0.1 local.sk.o2
-            127.0.0.1 local.o2static.sk.o2
-            127.0.0.1 asistent.sk.o2
-            127.0.0.1 local.asistent.sk.o2
-            127.0.0.1 testeshop.tescomobile.sk.o2
+            127.0.0.1 www.sk.o2 o2static.sk.o2 local.sk.o2 local.o2static.sk.o2 asistent.sk.o2 local.asistent.sk.o2 testeshop.tescomobile.sk.o2 local.lukreo.com local.lukreo.pl
           '';
         };
 
