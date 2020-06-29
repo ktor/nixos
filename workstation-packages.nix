@@ -41,7 +41,8 @@ let
     unstable.keybase
     unstable.keybase-gui
     unstable.xdotool # for keepass autotype
-    unstable.xsecurelock
+    # unstable.xsecurelock
+    unstable.alock
     unstable.protonvpn-cli
   ];
   mail=with pkgs;[
