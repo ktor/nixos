@@ -64,6 +64,7 @@ let
     acpilight
     compton
     dmenu
+    j4-dmenu-desktop
     gmrun
     haskellPackages.xmobar
     jmtpfs # mount android phone as block device
