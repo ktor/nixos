@@ -129,6 +129,7 @@
         pkgs.gutenprint
         pkgs.gutenprintBin
         pkgs.hplip
+        pkgs.cnijfilter2
       ];
 
       avahi.enable = true;
