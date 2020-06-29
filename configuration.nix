@@ -188,12 +188,13 @@
 
     time.timeZone = "Europe/Bratislava";
 
-    # Select internationalisation properties.
-    i18n = {
-      consoleFont = "Lat2-Terminus16";
-      consoleKeyMap = "pl";
-      defaultLocale = "en_GB.UTF-8";
+    console = {
+      font = "Lat2-Terminus16";
+      keyMap = "pl";
     };
+
+    # Select internationalisation properties.
+    i18n.defaultLocale = "en_GB.UTF-8";
 
     # Virtualization + containers
     virtualisation.docker = {
