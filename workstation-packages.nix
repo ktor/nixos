@@ -57,7 +57,10 @@ let
     unstable.stalonetray
   ];
   desktop= with pkgs; [
+    glxinfo # thunderbird needs that for WebGL support
+    spotify
     xsel
+    xclip
     acpilight
     compton
     dmenu
@@ -78,6 +81,7 @@ let
     unstable.gnome3.gnome-keyring
     unstable.gnome3.seahorse
     unstable.gnome3.dconf
+    unstable.gnome3.pomodoro
   ];
   development= with pkgs; [
     unstable.bcompare
