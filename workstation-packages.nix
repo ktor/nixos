@@ -85,8 +85,8 @@ let
     unstable.gnome3.pomodoro
   ];
   development= with pkgs; [
-    unstable.bcompare
-    unstable.jetbrains.idea-ultimate
+    bcompare
+    jetbrains.idea-ultimate
     unstable.asciidoctor
     unstable.charles
     unstable.ctags
@@ -95,7 +95,7 @@ let
     autoconf
     python
     python3-with-my-packages
-    unstable.groovy
+    groovy
     go
     # telnet
     docker_compose
@@ -108,7 +108,7 @@ let
     unstable.firefox
     unstable.wget
     unstable.openssl
-    unstable.curl
+    unstable.curlFull
   ];
   haskellStuff= with pkgs; [
     haskell.compiler.ghc844
@@ -127,7 +127,9 @@ let
     yarn
   ];
   office= with pkgs; [
-    previous.copyq
+    unstable.teams
+    mime-types
+    copyq
     unstable.freemind
     unstable.calibre
     unstable.aspellDicts.ru
@@ -149,7 +151,9 @@ let
   chat=with pkgs; [
     unstable.skype
     unstable.slack
+    unstable.discord
     unstable.irssi
+    unstable.signal-desktop
   ];
   cli=with pkgs; [
     unstable.fzf
