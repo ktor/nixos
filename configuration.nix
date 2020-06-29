@@ -31,15 +31,15 @@
       networkmanager.enable = true;
       hostName = "probook";
 
-        firewall = {
-          allowedTCPPorts = [ 80 443 631 ];
-          allowedUDPPorts = [ 631 ];
-        };
-        extraHosts =
-          ''
-            127.0.0.1 www.sk.o2 o2static.sk.o2 local.sk.o2 local.o2static.sk.o2 asistent.sk.o2 local.asistent.sk.o2 testeshop.tescomobile.sk.o2 local.lukreo.com local.lukreo.pl
-          '';
-        };
+      firewall = {
+        allowedTCPPorts = [ 80 443 631 ];
+        allowedUDPPorts = [ 631 ];
+      };
+      extraHosts =
+        ''
+        127.0.0.1 mock.sk.o2 www.sk.o2 o2static.sk.o2 local.sk.o2 local.o2static.sk.o2 asistent.sk.o2 local.asistent.sk.o2 testeshop.tescomobile.sk.o2 local.lukreo.com local.lukreo.pl
+        '';
+      };
 
       hardware.bluetooth.enable = true;
 
