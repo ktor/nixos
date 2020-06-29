@@ -154,7 +154,7 @@
 
     xserver = {
       enable = true;
-      synaptics.enable = true; # touchpad
+      # synaptics.enable = true; # touchpad
 
       # Basic keymap, is used for i18n virtual consoles
       layout = "pl";
@@ -171,10 +171,10 @@
       };
 
       displayManager.lightdm.enable = true;
-      windowManager.default = "xmonad";
+      displayManager.defaultSession = "none+xmonad";
       desktopManager = {
-        default = "none";
         xterm.enable = false;
+        xfce.enable = true;
       };
 
     };
