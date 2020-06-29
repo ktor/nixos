@@ -132,9 +132,14 @@
         pkgs.cnijfilter2
       ];
 
-      avahi.enable = true;
-      avahi.publish.enable = true;
-      avahi.publish.userServices = true;
+      avahi = {
+        enable = true;
+        nssmdns = true;
+        publish = {
+          enable = true;
+          userServices = true;
+        };
+      };
 
       # Enable the OpenSSH server.
       # sshd.enable = true;
