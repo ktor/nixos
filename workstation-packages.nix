@@ -37,9 +37,9 @@ let
   security=with pkgs;[
     unstable.libsecret
     unstable.gnupg
-    unstable.keepass
-    keybase
-    keybase-gui
+    unstable.keepassxc
+    unstable.keybase
+    unstable.keybase-gui
     unstable.xdotool # for keepass autotype
     unstable.xsecurelock
     unstable.protonvpn-cli
