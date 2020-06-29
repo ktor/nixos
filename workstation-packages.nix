@@ -47,7 +47,7 @@ let
   ];
   mail=with pkgs;[
     unstable.msgviewer
-    previous.thunderbird
+    thunderbird
     unstable.gnome3.evolution
   ];
   notifications=with pkgs;[
