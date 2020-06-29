@@ -14,22 +14,22 @@
       loader.systemd-boot.enable = true; # (for UEFI systems only)
 
       kernel.sysctl = {
-          "vm.max_map_count" = 262144;
-        };
+        "vm.max_map_count" = 262144;
       };
+    };
 
-      fileSystems."/boot".device = "/dev/disk/by-label/boot";
-      fileSystems."/home/ktor/development" = {
-        fsType = "ext4";
-        device = "/dev/disk/by-label/development";
-        options = ["rw" "user" "exec"];
-      };
+    fileSystems."/boot".device = "/dev/disk/by-label/boot";
+    fileSystems."/home/ktor/development" = {
+      fsType = "ext4";
+      device = "/dev/disk/by-label/development";
+      options = ["rw" "user" "exec"];
+    };
 
-      swapDevices = [ { device = "/dev/disk/by-label/swap"; } ];
+    swapDevices = [ { device = "/dev/disk/by-label/swap"; } ];
 
-      networking = {
-        networkmanager.enable = true;
-        hostName = "probook";
+    networking = {
+      networkmanager.enable = true;
+      hostName = "probook";
 
         firewall = {
           allowedTCPPorts = [ 80 443 631 ];
@@ -41,28 +41,28 @@
           '';
         };
 
-        hardware.bluetooth.enable = true;
+      hardware.bluetooth.enable = true;
 
-        hardware.pulseaudio.enable = true;
-        hardware.pulseaudio.package = pkgs.pulseaudioFull;
-        hardware.pulseaudio.support32Bit = true;
-        hardware.pulseaudio.extraConfig = ''
-          load-module module-switch-on-connect
-        '';
+      hardware.pulseaudio.enable = true;
+      hardware.pulseaudio.package = pkgs.pulseaudioFull;
+      hardware.pulseaudio.support32Bit = true;
+      hardware.pulseaudio.extraConfig = ''
+            load-module module-switch-on-connect
+      '';
 
-        hardware.opengl = {
-          driSupport = true;
-          driSupport32Bit = true;
-        };
+      hardware.opengl = {
+        driSupport = true;
+        driSupport32Bit = true;
+      };
 
-        powerManagement.enable = true;
+      powerManagement.enable = true;
 
 
-        fonts.fonts = with pkgs; [
-          anonymousPro
-          powerline-fonts
-          corefonts
-        ];
+      fonts.fonts = with pkgs; [
+        anonymousPro
+        powerline-fonts
+        corefonts
+      ];
 
     # Packages
     nixpkgs.config = {
