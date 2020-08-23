@@ -46,7 +46,7 @@ in
       };
       extraHosts =
         ''
-        127.0.0.1 mock.sk.o2 www.sk.o2 o2static.sk.o2 local.sk.o2 local.o2static.sk.o2 asistent.sk.o2 local.asistent.sk.o2 testeshop.tescomobile.sk.o2 local.lukreo.com local.lukreo.pl
+          127.0.0.1 mock.sk.o2 www.sk.o2 o2static.sk.o2 local.sk.o2 local.o2static.sk.o2 asistent.sk.o2 local.asistent.sk.o2 testeshop.tescomobile.sk.o2 local.lukreo.com local.lukreo.pl
         '';
       };
 
@@ -108,6 +108,7 @@ in
     };
 
     services = {
+      flatpak.enable = true;
       blueman.enable = true;
       batteryNotifier.enable = true; # see suspend.nix
       localtime.enable = true;
@@ -206,70 +207,72 @@ in
   };
 
 
-    # Auto upgrade my system
-    system.autoUpgrade.enable = false;
+  xdg.portal.enable = true;
 
-    time.timeZone = "Europe/Bratislava";
+  # Auto upgrade my system
+  system.autoUpgrade.enable = false;
 
-    console = {
-      font = "Lat2-Terminus16";
-      keyMap = "pl";
-    };
+  time.timeZone = "Europe/Bratislava";
 
-    # Select internationalisation properties.
-    i18n.defaultLocale = "en_GB.UTF-8";
+  console = {
+    font = "Lat2-Terminus16";
+    keyMap = "pl";
+  };
 
-    # Virtualization + containers
-    virtualisation.docker = {
+  # Select internationalisation properties.
+  i18n.defaultLocale = "en_GB.UTF-8";
+
+  # Virtualization + containers
+  virtualisation.docker = {
+    enable = true;
+    extraOptions = "--bip 172.200.0.1/16 --ip-masq=true --iptables=true";
+  };
+
+  # Security
+  security = {
+    sudo = {
       enable = true;
-      extraOptions = "--bip 172.200.0.1/16 --ip-masq=true --iptables=true";
+      wheelNeedsPassword = false;
     };
-
-    # Security
-    security = {
-      sudo = {
-        enable = true;
-        wheelNeedsPassword = false;
-      };
-      pam = {
-        services.lightdm.enableGnomeKeyring = true; # unlock gnome keyring upon login with lightdm
-        services.lightdm.enableKwallet = true; # unlock gnome keyring upon login with lightdm
-        loginLimits =[
-          { domain = "*"; item = "nofile"; type = "-"; value = "999999"; }
-        ];
-      };
+    pam = {
+      services.lightdm.enableGnomeKeyring = true; # unlock gnome keyring upon login with lightdm
+      services.lightdm.enableKwallet = true; # unlock gnome keyring upon login with lightdm
+      loginLimits =[
+        { domain = "*"; item = "nofile"; type = "-"; value = "999999"; }
+      ];
     };
+  };
 
-    # Define a user account. Don't forget to set a password with ‘passwd’.
-    users.extraUsers.ktor= {
-      isNormalUser = true;
-      group = "users";
-      uid = 1000;
-      extraGroups = [ "autologin" "wheel" "networkmanager" "docker" "video" ];
-      createHome = true;
-      home = "/home/ktor";
-      shell = "/run/current-system/sw/bin/bash";
-    };
+  # Define a user account. Don't forget to set a password with ‘passwd’.
+  users.extraUsers.ktor= {
+    isNormalUser = true;
+    group = "users";
+    uid = 1000;
+    extraGroups = [ "autologin" "wheel" "networkmanager" "docker" "video" ];
+    createHome = true;
+    home = "/home/ktor";
+    shell = "/run/current-system/sw/bin/bash";
+  };
 
-    # shell
-    programs.bash.enableCompletion = true;
+  # shell
+  programs.bash.enableCompletion = true;
 
-    # Show git info in bash prompt and display a colorful hostname if using ssh.
-    programs.bash.promptInit = ''
-      source ${pkgs.gitAndTools.gitFull}/share/git/contrib/completion/git-prompt.sh
-    '';
+  # Show git info in bash prompt and display a colorful hostname if using ssh.
+  programs.bash.promptInit = ''
+    source ${pkgs.gitAndTools.gitFull}/share/git/contrib/completion/git-prompt.sh
+  '';
 
-    programs.dconf.enable = true;
+  programs.dconf.enable = true;
 
-    ## SYSTEMD
+  ## SYSTEMD
 
-    systemd.user.services."udiskie" = {
-      enable = true;
-      description = "handle automounting";
-      wantedBy = [ "default.target" ];
-      serviceConfig.Restart = "always";
-      serviceConfig.RestartSec = 2;
-      serviceConfig.ExecStart = "${pkgs.udiskie}/bin/udiskie";
-    };
+  systemd.user.services."udiskie" = {
+    enable = true;
+    description = "handle automounting";
+    wantedBy = [ "default.target" ];
+    serviceConfig.Restart = "always";
+    serviceConfig.RestartSec = 2;
+    serviceConfig.ExecStart = "${pkgs.udiskie}/bin/udiskie";
+  };
 
-  }
+}
