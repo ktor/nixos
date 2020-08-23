@@ -1,4 +1,13 @@
 { config, pkgs, ... }:
+let
+  nvidia-offload = pkgs.writeShellScriptBin "nvidia-offload" ''
+    export __NV_PRIME_RENDER_OFFLOAD=1
+    export __NV_PRIME_RENDER_OFFLOAD_PROVIDER=NVIDIA-G0
+    export __GLX_VENDOR_LIBRARY_NAME=nvidia
+    export __VK_LAYER_NV_optimus=NVIDIA_only
+    exec -a "$0" "$@"
+  '';
+in
 {
   imports = [
       # Include the results of the hardware scan.
@@ -53,6 +62,18 @@
       hardware.opengl = {
         driSupport = true;
         driSupport32Bit = true;
+      };
+
+      environment.systemPackages = [ nvidia-offload ];
+
+      hardware.nvidia.optimus_prime = {
+        enable = true;
+
+        # Bus ID of the NVIDIA GPU. You can find it using lspci, either under 3D or VGA
+        nvidiaBusId = "PCI:1:0:0";
+
+        # Bus ID of the Intel GPU. You can find it using lspci, either under 3D or VGA
+        intelBusId = "PCI:0:2:0";
       };
 
       powerManagement.enable = true;
@@ -147,7 +168,7 @@
       acpid.enable = true;
 
       redshift = { # limit blue light after sunset
-      enable = true;
+      enable = false;
       temperature.day = 6500;
       temperature.night = 3400;
     };
@@ -155,6 +176,8 @@
     xserver = {
       enable = true;
       # synaptics.enable = true; # touchpad
+
+      videoDrivers = [ "nvidia" ];
 
       # Basic keymap, is used for i18n virtual consoles
       layout = "pl";
