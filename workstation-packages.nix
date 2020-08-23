@@ -1,12 +1,6 @@
 { config, pkgs, ... }:
 let
-  unstable = import <unstable> {
-    config = config.nixpkgs.config;
-  };
-  previous = import <previous> {
-    config = config.nixpkgs.config;
-  };
-  my-python3-packages = python37Packages: with python37Packages; [
+  my-python3-packages = python38Packages: with python38Packages; [
     pip
     virtualenv
     lxml
@@ -15,48 +9,45 @@ let
   ];
   python3-with-my-packages = pkgs.python3.withPackages my-python3-packages;
   video= with pkgs; [
-    unstable.breeze-icons
-    unstable.ffmpeg-full
-    unstable.frei0r
-    unstable.openshot-qt
-    unstable.vlc
+    breeze-icons
+    ffmpeg-full
+    frei0r
+    openshot-qt
+    vlc
   ];
   photo= with pkgs; [
-    unstable.darktable
-    unstable.gimp
-    unstable.shotwell
+    darktable
+    gimp
+    shotwell
   ];
   archiving=with pkgs; [
-    unstable.ark
-    unstable.dropbox-cli
-    unstable.p7zip
-    unstable.syncthing
-    unstable.recoll
-    unstable.unzip
+    ark
+    dropbox-cli
+    p7zip
+    syncthing
+    recoll
+    unzip
   ];
   security=with pkgs;[
-    unstable.libsecret
-    unstable.gnupg
-    unstable.keepassxc
-    unstable.keybase
-    unstable.keybase-gui
-    unstable.xdotool # for keepass autotype
-    # unstable.xsecurelock
-    unstable.alock
-    unstable.protonvpn-cli
+    gnupg
+    keepassxc
+    keybase
+    keybase-gui
+    alock
   ];
   mail=with pkgs;[
-    unstable.msgviewer
+    msgviewer
     thunderbird
-    unstable.gnome3.evolution
   ];
   notifications=with pkgs;[
     networkmanagerapplet
-    unstable.dunst # lightweight notifications
-    unstable.libnotify # lightweight notifications
-    unstable.stalonetray
+    dunst # lightweight notifications
+    libnotify # lightweight notifications
+    stalonetray
   ];
   desktop= with pkgs; [
+    anydesk
+    franz
     glxinfo # thunderbird needs that for WebGL support
     spotify
     xsel
@@ -73,23 +64,23 @@ let
     pavucontrol
     shared-mime-info
     unclutter-xfixes
-    unstable.feh
+    feh
     shutter
     xcape
     xorg.xkbcomp
   ];
   gnomeAppsDependencies = with pkgs; [
-    unstable.gnome3.gnome-keyring
-    unstable.gnome3.seahorse
-    unstable.gnome3.dconf
-    unstable.gnome3.pomodoro
+    gnome3.gnome-keyring
+    gnome3.seahorse
+    gnome3.dconf
+    gnome3.pomodoro
   ];
   development= with pkgs; [
     bcompare
     jetbrains.idea-ultimate
-    unstable.asciidoctor
-    unstable.charles
-    unstable.ctags
+    asciidoctor
+    charles
+    ctags
     gcc
     automake
     autoconf
@@ -99,16 +90,16 @@ let
     go
     # telnet
     docker_compose
-    unstable.gitAndTools.gitFull
-    unstable.git-lfs
+    gitAndTools.gitFull
+    git-lfs
   ];
   web= with pkgs;[
-    unstable.chromium
-    unstable.google-chrome
-    unstable.firefox
-    unstable.wget
-    unstable.openssl
-    unstable.curlFull
+    chromium
+    google-chrome
+    firefox
+    wget
+    openssl
+    curlFull
   ];
   haskellStuff= with pkgs; [
     haskell.compiler.ghc844
@@ -117,9 +108,9 @@ let
     cabal-install
   ];
   java= with pkgs; [
-    unstable.gradle
-    unstable.gradle-completion
-    unstable.jmeter
+    gradle
+    gradle-completion
+    jmeter
   ];
   frontend= with pkgs; [
     nodePackages.node2nix
@@ -127,19 +118,19 @@ let
     yarn
   ];
   office= with pkgs; [
-    unstable.teams
+    teams
     mime-types
     copyq
-    unstable.freemind
-    unstable.calibre
-    unstable.aspellDicts.ru
-    unstable.aspellDicts.pl
-    unstable.aspellDicts.sk
-    unstable.hledger
+    freemind
+    calibre
+    aspellDicts.ru
+    aspellDicts.pl
+    aspellDicts.sk
+    hledger
     qpdfview
-    unstable.ledger
-    unstable.libreoffice-fresh
-    unstable.pandoc
+    ledger
+    libreoffice-fresh
+    pandoc
   ];
   fileSystemUtilities = with pkgs; [
     exfat-utils
@@ -149,30 +140,31 @@ let
     udiskie
   ];
   chat=with pkgs; [
-    unstable.skype
-    unstable.slack
-    unstable.discord
-    unstable.irssi
-    unstable.signal-desktop
+    skype
+    slack
+    discord
+    irssi
+    signal-desktop
   ];
   cli=with pkgs; [
-    unstable.fzf
-    unstable.htop
-    unstable.powertop
-    unstable.jq
-    unstable.alacritty
-    unstable.bat
-    unstable.highlight
-    unstable.hstr
-    unstable.ripgrep
-    unstable.tig
-    unstable.tmux
-    unstable.vimHugeX
-    unstable.tree
+    dos2unix
+    fzf
+    htop
+    powertop
+    jq
+    alacritty
+    bat
+    highlight
+    hstr
+    ripgrep
+    tig
+    tmux
+    vimHugeX
+    tree
   ];
   network=with pkgs; [
-    unstable.soapui
-    unstable.telnet
+    soapui
+    telnet
   ];
   allPackages = archiving
     ++ chat
