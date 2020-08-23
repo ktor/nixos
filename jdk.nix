@@ -3,8 +3,6 @@
 
   environment.systemPackages = with pkgs; [
     visualvm
-    graalvm8
-    jdk11
     jdk
   ];
 
