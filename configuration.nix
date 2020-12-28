@@ -8,8 +8,8 @@ let
     exec -a "$0" "$@"
   '';
 in
-{
-  imports = [
+  {
+    imports = [
       # Include the results of the hardware scan.
       ./hardware-configuration.nix
       ./keybase.nix
@@ -55,6 +55,23 @@ in
       hardware.pulseaudio.enable = true;
       hardware.pulseaudio.package = pkgs.pulseaudioFull;
       hardware.pulseaudio.support32Bit = true;
+      hardware.pulseaudio.daemon.config = {
+          default-sample-format = "s32le";
+          default-sample-rate = 48000;
+          alternate-sample-rate = 96000;
+          default-sample-channels = 2;
+          default-channel-map = "front-left,front-right";
+          default-fragments = 2;
+          default-fragment-size-msec = 125;
+          resample-method = "speex-float-10";
+          enable-lfe-remixing = "yes";
+          high-priority = "yes";
+          nice-level = -11;
+          realtime-scheduling = "yes";
+          realtime-priority = 9;
+          rlimit-rtprio = 9;
+          daemonize = "no";
+      };
       hardware.pulseaudio.extraConfig = ''
             load-module module-switch-on-connect
       '';
@@ -65,9 +82,8 @@ in
       };
 
       environment.systemPackages = [ nvidia-offload ];
-
-      hardware.nvidia.optimus_prime = {
-        enable = true;
+      hardware.nvidia.prime = {
+        sync.enable = true;
 
         # Bus ID of the NVIDIA GPU. You can find it using lspci, either under 3D or VGA
         nvidiaBusId = "PCI:1:0:0";
@@ -75,6 +91,8 @@ in
         # Bus ID of the Intel GPU. You can find it using lspci, either under 3D or VGA
         intelBusId = "PCI:0:2:0";
       };
+
+      hardware.cpu.intel.updateMicrocode = true;
 
       powerManagement.enable = true;
 
@@ -91,10 +109,9 @@ in
       allowUnfreeRedistributable = true;
     };
     nix = {
-      binaryCaches = ["https://cache.nixos.org/" "https://ktor.cachix.org" ];
-      binaryCachePublicKeys = [ "ktor.cachix.org-1:4LkNkLl+ZGXd4DOnch87MaErr+1J+PP7z3rnLxtekus=" ];
       trustedUsers = [ "root" "ktor" ];
       useSandbox = true;
+      autoOptimiseStore = true;
     };
 
     ## SERVICES
@@ -108,8 +125,11 @@ in
     };
 
     services = {
+      cron.enable = true;
+
+      fstrim.enable = true;
+
       flatpak.enable = true;
-      blueman.enable = true;
       batteryNotifier.enable = true; # see suspend.nix
       localtime.enable = true;
       syncthing = {
@@ -138,7 +158,7 @@ in
       compton = {
         enable          = true;
         fade            = true;
-        inactiveOpacity = "0.9";
+        inactiveOpacity = 0.9;
         shadow          = true;
         fadeDelta       = 4;
       };
@@ -248,7 +268,7 @@ in
     isNormalUser = true;
     group = "users";
     uid = 1000;
-    extraGroups = [ "autologin" "wheel" "networkmanager" "docker" "video" ];
+    extraGroups = [ "autologin" "wheel" "networkmanager" "docker" "video" "lp"];
     createHome = true;
     home = "/home/ktor";
     shell = "/run/current-system/sw/bin/bash";
@@ -263,6 +283,8 @@ in
   '';
 
   programs.dconf.enable = true;
+
+  programs.gnupg.agent.enable = true;
 
   ## SYSTEMD
 
