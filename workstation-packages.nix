@@ -34,10 +34,12 @@ let
     keybase
     keybase-gui
     alock
+    cacert
+    cachix
   ];
   mail=with pkgs;[
     msgviewer
-    thunderbird
+    thunderbird-bin
   ];
   notifications=with pkgs;[
     networkmanagerapplet
@@ -47,7 +49,6 @@ let
   ];
   desktop= with pkgs; [
     anydesk
-    franz
     glxinfo # thunderbird needs that for WebGL support
     spotify
     xsel
@@ -76,7 +77,7 @@ let
     gnome3.pomodoro
   ];
   development= with pkgs; [
-    bcompare
+    # bcompare - use newer version from nix-env
     jetbrains.idea-ultimate
     asciidoctor
     charles
@@ -94,6 +95,7 @@ let
     git-lfs
   ];
   web= with pkgs;[
+    brave
     chromium
     google-chrome
     firefox
@@ -102,10 +104,8 @@ let
     curlFull
   ];
   haskellStuff= with pkgs; [
-    haskell.compiler.ghc844
+    ghc
     stack
-    # stack2nix - marked as broken
-    cabal-install
   ];
   java= with pkgs; [
     gradle
@@ -147,6 +147,7 @@ let
     signal-desktop
   ];
   cli=with pkgs; [
+    fd
     dos2unix
     fzf
     htop
