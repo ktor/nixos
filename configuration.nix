@@ -50,28 +50,14 @@ in
         '';
       };
 
-      hardware.bluetooth.enable = true;
+      hardware.bluetooth = {
+        enable = true;
+        package = pkgs.bluezFull;
+      };
 
       hardware.pulseaudio.enable = true;
       hardware.pulseaudio.package = pkgs.pulseaudioFull;
       hardware.pulseaudio.support32Bit = true;
-      hardware.pulseaudio.daemon.config = {
-          default-sample-format = "s32le";
-          default-sample-rate = 48000;
-          alternate-sample-rate = 96000;
-          default-sample-channels = 2;
-          default-channel-map = "front-left,front-right";
-          default-fragments = 2;
-          default-fragment-size-msec = 125;
-          resample-method = "speex-float-10";
-          enable-lfe-remixing = "yes";
-          high-priority = "yes";
-          nice-level = -11;
-          realtime-scheduling = "yes";
-          realtime-priority = 9;
-          rlimit-rtprio = 9;
-          daemonize = "no";
-      };
       hardware.pulseaudio.extraConfig = ''
             load-module module-switch-on-connect
       '';
@@ -98,9 +84,9 @@ in
 
 
       fonts.fonts = with pkgs; [
-        anonymousPro
-        powerline-fonts
+        nerdfonts # very nice coding fonts with icon/powerline support
         corefonts
+        lato # nice presentation font
       ];
 
     # Packages

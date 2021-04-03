@@ -12,6 +12,7 @@ let
     breeze-icons
     ffmpeg-full
     frei0r
+    blender
     openshot-qt
     vlc
   ];
@@ -118,6 +119,7 @@ let
     yarn
   ];
   office= with pkgs; [
+    ganttproject-bin
     teams
     mime-types
     copyq
@@ -147,6 +149,7 @@ let
     signal-desktop
   ];
   cli=with pkgs; [
+    exa # alternative replacement for ls
     fd
     dos2unix
     fzf
