@@ -208,7 +208,7 @@ in
       };
 
     };
-    gnome3.gnome-keyring.enable = true;
+    gnome.gnome-keyring.enable = true;
     dbus.packages = with pkgs; [ gnome3.dconf gnome2.GConf ];
   };
 
