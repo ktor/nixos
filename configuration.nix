@@ -19,6 +19,8 @@ in
       ./suspend.nix
     ];
 
+    hardware.nvidia.modesetting.enable = true;
+
     boot = {
       loader.systemd-boot.enable = true; # (for UEFI systems only)
 
@@ -69,7 +71,9 @@ in
 
       environment.systemPackages = [ nvidia-offload ];
       hardware.nvidia.prime = {
-        sync.enable = true;
+        # sync.enable = true;
+
+        offload.enable = true;
 
         # Bus ID of the NVIDIA GPU. You can find it using lspci, either under 3D or VGA
         nvidiaBusId = "PCI:1:0:0";
