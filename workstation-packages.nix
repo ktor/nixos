@@ -9,6 +9,7 @@ let
   ];
   python3-with-my-packages = pkgs.python3.withPackages my-python3-packages;
   video= with pkgs; [
+    obs-studio # streaming
     breeze-icons
     ffmpeg-full
     frei0r
@@ -78,6 +79,7 @@ let
     gnome3.pomodoro
   ];
   development= with pkgs; [
+    exercism # A Go based command line tool for exercism.io
     # bcompare - use newer version from nix-env
     jetbrains.idea-ultimate
     asciidoctor
@@ -105,8 +107,9 @@ let
     curlFull
   ];
   haskellStuff= with pkgs; [
-    ghc
     stack
+    ghc
+    cabal2nix
   ];
   java= with pkgs; [
     gradle
@@ -197,4 +200,5 @@ in {
     libxml2
     lm_sensors
   ] ++ allPackages;
+
 }
