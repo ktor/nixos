@@ -90,10 +90,14 @@ in
       ];
 
     # Packages
-    nixpkgs.config = {
-      allowUnfree = true;
-      allowUnfreeRedistributable = true;
+    nixpkgs = {
+      config = {
+        allowUnfree = true;
+        allowUnfreeRedistributable = true;
+      };
+      overlays = import ./overlays;
     };
+
     nix = {
       trustedUsers = [ "root" "ktor" ];
       useSandbox = true;

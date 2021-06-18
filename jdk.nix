@@ -3,7 +3,7 @@
 
   environment.systemPackages = with pkgs; [
     visualvm
-    jdk
+    adoptopenjdk-hotspot-bin-8
     jdk11
     maven
   ];
