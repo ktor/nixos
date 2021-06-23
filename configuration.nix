@@ -14,7 +14,7 @@ in
       ./hardware-configuration.nix
       ./keybase.nix
       ./workstation-packages.nix
-      ./jdk.nix
+      ./java.nix
       ./pki.nix
       ./suspend.nix
     ];
