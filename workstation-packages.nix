@@ -111,11 +111,6 @@ let
     ghc
     cabal2nix
   ];
-  java= with pkgs; [
-    gradle
-    gradle-completion
-    jmeter
-  ];
   frontend= with pkgs; [
     nodePackages.node2nix
     nodejs
@@ -182,7 +177,6 @@ let
     ++ frontend
     ++ gnomeAppsDependencies
     ++ haskellStuff
-    ++ java
     ++ mail
     ++ network
     ++ notifications

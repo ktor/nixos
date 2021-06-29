@@ -2,10 +2,13 @@
 {
 
   environment.systemPackages = with pkgs; [
-    visualvm
     adoptopenjdk-hotspot-bin-8
     jdk11
+    jmeter
+    visualvm
     maven
+    gradle
+    gradle-completion
     lombok
     (with eclipses; eclipseWithPlugins {
       eclipse = eclipse-java;
