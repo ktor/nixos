@@ -81,7 +81,7 @@ let
   development= with pkgs; [
     exercism # A Go based command line tool for exercism.io
     # bcompare - use newer version from nix-env
-    jetbrains.idea-ultimate
+    # jetbrains.idea-ultimate
     asciidoctor
     charles
     ctags
