@@ -17,6 +17,7 @@ in
       ./java.nix
       ./pki.nix
       ./suspend.nix
+      ./shell.nix
     ];
 
     hardware.nvidia.modesetting.enable = true;
@@ -70,7 +71,13 @@ in
         driSupport32Bit = true;
       };
 
-      environment.systemPackages = [ nvidia-offload ];
+      environment = {
+        systemPackages = [ nvidia-offload ];
+        pathsToLink = [
+          "/share/nix-direnv"
+        ];
+      };
+
       hardware.nvidia.prime = {
         # sync.enable = true;
 
@@ -107,6 +114,10 @@ in
       trustedUsers = [ "root" "ktor" ];
       useSandbox = true;
       autoOptimiseStore = true;
+      extraOptions = ''
+        keep-outputs = true
+        keep-derivations = true
+      '';
     };
 
     ## SERVICES

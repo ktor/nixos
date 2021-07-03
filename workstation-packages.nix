@@ -163,6 +163,8 @@ let
     tmux
     vimHugeX
     tree
+    direnv
+    nix-direnv
   ];
   network=with pkgs; [
     soapui
