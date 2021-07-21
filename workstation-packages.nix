@@ -9,6 +9,7 @@ let
   ];
   python3-with-my-packages = pkgs.python3.withPackages my-python3-packages;
   video= with pkgs; [
+    losslesscut-bin
     obs-studio # streaming
     breeze-icons
     ffmpeg-full
