@@ -32,6 +32,7 @@ let
     unzip
   ];
   security=with pkgs;[
+    keysmith
     gnupg
     keepassxc
     keybase
@@ -118,6 +119,7 @@ let
     yarn
   ];
   office= with pkgs; [
+    okular # handles pdf attachments
     ganttproject-bin
     teams
     mime-types
