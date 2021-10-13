@@ -20,6 +20,12 @@
     })
   ];
 
+  environment.etc = with pkgs; {
+    "jdk".source = jdk;
+    "jdk8".source = adoptopenjdk-hotspot-bin-8;
+    "jdk11".source = jdk11;
+  };
+
   nixpkgs.config = {
     allowUnfree = true;
     allowUnfreeRedistributable = true;
