@@ -52,6 +52,7 @@ let
     stalonetray
   ];
   desktop= with pkgs; [
+    cozy
     anydesk
     glxinfo # thunderbird needs that for WebGL support
     spotify
@@ -81,6 +82,8 @@ let
     gnome3.pomodoro
   ];
   development= with pkgs; [
+    hugo # static website generator
+    gh # github cli client
     exercism # A Go based command line tool for exercism.io
     # bcompare - use newer version from nix-env
     # jetbrains.idea-ultimate
@@ -130,6 +133,7 @@ let
     aspellDicts.pl
     aspellDicts.sk
     hledger
+    hledger-web
     qpdfview
     ledger
     libreoffice-fresh
@@ -150,6 +154,7 @@ let
     signal-desktop
   ];
   cli=with pkgs; [
+    czkawka # quick search for duplicate files
     exa # alternative replacement for ls
     fd
     dos2unix
