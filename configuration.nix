@@ -69,6 +69,12 @@ in
       '';
 
       hardware.opengl = {
+        enable=true;
+        extraPackages = with pkgs; [
+            vaapiIntel
+            vaapiVdpau
+            libvdpau-va-gl
+          ];
         driSupport = true;
         driSupport32Bit = true;
       };
@@ -293,6 +299,8 @@ in
   programs.dconf.enable = true;
 
   programs.gnupg.agent.enable = true;
+
+  programs.steam.enable = true;
 
   ## SYSTEMD
 
