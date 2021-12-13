@@ -134,8 +134,9 @@ in
     programs.light.enable = true;
 
     location = {
-      latitude = 48.1;
-      longitude = 17.1;
+      provider = "manual";
+      latitude = 48.14;
+      longitude = 17.10;
     };
 
     services = {
@@ -203,10 +204,11 @@ in
       acpid.enable = true;
 
       redshift = { # limit blue light after sunset
-      enable = false;
-      temperature.day = 6500;
-      temperature.night = 3400;
-    };
+        enable = true;
+        temperature.day = 6500;
+        temperature.night = 2700;
+        brightness.night = "0.5";
+      };
 
     xserver = {
       enable = true;
