@@ -25,7 +25,9 @@ in
     boot = {
       loader.systemd-boot.enable = true; # (for UEFI systems only)
 
-      kernelPackages = pkgs.linuxPackages_zen;
+      extraModulePackages = with config.boot.kernelPackages; [ ];
+
+      kernelPackages = pkgs.linuxPackages_latest;
       kernel.sysctl = {
         "vm.max_map_count" = 262144;
       };
