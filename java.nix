@@ -24,6 +24,7 @@
     "jdk".source = jdk;
     "jdk8".source = adoptopenjdk-hotspot-bin-8;
     "jdk11".source = jdk11;
+    "nodejs16".source = nodejs-16_x;
   };
 
   nixpkgs.config = {

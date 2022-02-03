@@ -9,6 +9,7 @@ let
   ];
   python3-with-my-packages = pkgs.python3.withPackages my-python3-packages;
   video= with pkgs; [
+    kodi
     losslesscut-bin
     obs-studio # streaming
     breeze-icons
@@ -71,7 +72,7 @@ let
     shared-mime-info
     unclutter-xfixes
     feh
-    shutter
+    # shutter
     xcape
     xorg.xkbcomp
   ];
@@ -115,11 +116,6 @@ let
     stack
     ghc
     cabal2nix
-  ];
-  frontend= with pkgs; [
-    nodePackages.node2nix
-    nodejs
-    yarn
   ];
   office= with pkgs; [
     okular # handles pdf attachments
@@ -184,7 +180,6 @@ let
     ++ desktop
     ++ development
     ++ fileSystemUtilities
-    ++ frontend
     ++ gnomeAppsDependencies
     ++ haskellStuff
     ++ mail
