@@ -52,29 +52,36 @@ in
       };
       extraHosts =
         ''
-          127.0.0.1 mock.sk.o2 www.sk.o2 o2static.sk.o2 local.sk.o2 local.o2static.sk.o2 asistent.sk.o2 local.asistent.sk.o2 testeshop.tescomobile.sk.o2 local.lukreo.com
+          127.0.0.1 mock.sk.o2 www.sk.o2 o2static.sk.o2 local.sk.o2 local.o2static.sk.o2 asistent.sk.o2 local.asistent.sk.o2 testeshop.tescomobile.sk.o2 local.lukreo.com my.local.lukreo.com local.lukreo.pl moje.local.lukreo.pl
         '';
       };
 
       hardware.bluetooth = {
         enable = true;
-        package = pkgs.bluezFull;
+        settings = {
+          General = {
+            Enable = "Source,Sink,Media,Socket";
+          };
+        };
       };
 
-      hardware.pulseaudio.enable = true;
-      hardware.pulseaudio.package = pkgs.pulseaudioFull;
-      hardware.pulseaudio.support32Bit = true;
-      hardware.pulseaudio.extraConfig = ''
-            load-module module-switch-on-connect
-      '';
+      hardware.pulseaudio = {
+        enable = true;
+        package = pkgs.pulseaudioFull;
+        support32Bit = true;
+        extraConfig = ''
+              load-module module-switch-on-connect
+        '';
+        extraModules = [ pkgs.pulseaudio-modules-bt ];
+      };
 
       hardware.opengl = {
         enable=true;
         extraPackages = with pkgs; [
-            vaapiIntel
-            vaapiVdpau
-            libvdpau-va-gl
-          ];
+          vaapiIntel
+          vaapiVdpau
+          libvdpau-va-gl
+        ];
         driSupport = true;
         driSupport32Bit = true;
       };
@@ -114,6 +121,7 @@ in
       config = {
         allowUnfree = true;
         allowUnfreeRedistributable = true;
+        allowBroken = true;
       };
       overlays = import ./overlays;
     };
@@ -140,6 +148,9 @@ in
     };
 
     services = {
+
+      fprintd.enable = true; # fingerprint support
+
       cron.enable = true;
 
       fstrim.enable = true;
@@ -204,11 +215,11 @@ in
       acpid.enable = true;
 
       redshift = { # limit blue light after sunset
-        enable = true;
-        temperature.day = 6500;
-        temperature.night = 2700;
-        brightness.night = "0.5";
-      };
+      enable = true;
+      temperature.day = 6500;
+      temperature.night = 2700;
+      brightness.night = "0.8";
+    };
 
     xserver = {
       enable = true;
@@ -259,9 +270,11 @@ in
   i18n.defaultLocale = "en_GB.UTF-8";
 
   # Virtualization + containers
-  virtualisation.docker = {
-    enable = true;
-    extraOptions = "--bip 172.200.0.1/16 --ip-masq=true --iptables=true";
+  virtualisation = {
+    docker = {
+      enable = true;
+      extraOptions = "--bip 172.200.0.1/16 --ip-masq=true --iptables=true --insecure-registry docker.devlab.sk.o2";
+    };
   };
 
   # Security
