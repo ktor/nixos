@@ -53,6 +53,8 @@ let
     stalonetray
   ];
   desktop= with pkgs; [
+    clementine
+    qcad
     cozy
     anydesk
     glxinfo # thunderbird needs that for WebGL support
@@ -72,22 +74,24 @@ let
     shared-mime-info
     unclutter-xfixes
     feh
-    # shutter
+    shutter
     xcape
     xorg.xkbcomp
   ];
   gnomeAppsDependencies = with pkgs; [
     gnome3.gnome-keyring
     gnome3.seahorse
-    gnome3.dconf
+    dconf
     gnome3.pomodoro
   ];
   development= with pkgs; [
+    difftastic
+    httpie
     hugo # static website generator
     gh # github cli client
     exercism # A Go based command line tool for exercism.io
     # bcompare - use newer version from nix-env
-    # jetbrains.idea-ultimate
+    jetbrains.idea-ultimate
     asciidoctor
     charles
     ctags
@@ -98,10 +102,11 @@ let
     python3-with-my-packages
     groovy
     go
-    # telnet
-    docker_compose
+    docker-compose
     gitAndTools.gitFull
+    git-imerge # faster merge/rebase option https://softwareswirl.blogspot.com/2013/05/git-imerge-practical-introduction.html
     git-lfs
+    nodejs-16_x # global access for Intellij IDEA
   ];
   web= with pkgs;[
     brave
@@ -136,20 +141,24 @@ let
     pandoc
   ];
   fileSystemUtilities = with pkgs; [
-    exfat-utils
-    fuse_exfat
+    jdiskreport
+    exfat
     ntfs3g
     srm
     udiskie
   ];
   chat=with pkgs; [
-    skype
+    skypeforlinux
     slack
     discord
     irssi
     signal-desktop
+    tdesktop
   ];
   cli=with pkgs; [
+    ghostscript
+    imagemagick
+    zip
     czkawka # quick search for duplicate files
     exa # alternative replacement for ls
     fd
@@ -172,7 +181,7 @@ let
   ];
   network=with pkgs; [
     soapui
-    telnet
+    inetutils # telnet
   ];
   allPackages = archiving
     ++ chat
