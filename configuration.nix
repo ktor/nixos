@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, options, ... }:
 let
   nvidia-offload = pkgs.writeShellScriptBin "nvidia-offload" ''
     export __NV_PRIME_RENDER_OFFLOAD=1
@@ -50,50 +50,55 @@ in
         allowedTCPPorts = [ 80 443 631 ];
         allowedUDPPorts = [ 631 ];
       };
-      extraHosts =
-        ''
-          127.0.0.1 mock.sk.o2 www.sk.o2 o2static.sk.o2 local.sk.o2 local.o2static.sk.o2 asistent.sk.o2 local.asistent.sk.o2 testeshop.tescomobile.sk.o2 local.lukreo.com my.local.lukreo.com local.lukreo.pl moje.local.lukreo.pl
-        '';
-      };
+      extraHosts = (''
+          127.0.0.1 mock.sk.o2 www.sk.o2 o2static.sk.o2 local.admin.sk.o2 local.sk.o2 local.o2static.sk.o2 asistent.sk.o2 local.asistent.sk.o2 testeshop.tescomobile.sk.o2 npm.lukreo.com local.lukreo.com my.local.lukreo.com local.lukreo.pl moje.local.lukreo.pl local.portal.vse.sk local.threat.sk.o2security local.botnet.sk.o2security local.filter.sk.o2security local.test.filter.com local.test.botnet.com local.test.threat.com
+      '');
 
-      hardware.bluetooth = {
-        enable = true;
-        settings = {
-          General = {
-            Enable = "Source,Sink,Media,Socket";
-          };
-        };
-      };
+         # ${
+         #   let
+         #     hostsPath = https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews-gambling-porn/hosts;
+         #     hostsFile = builtins.fetchurl hostsPath;
+         #   in builtins.readFile "${hostsFile}"
+         # }
+      nameservers = ["1.1.1.1" "1.0.0.1"];
+      search = ["to2.to2cz.cz" "ux.to2sk.sk" "ux.to2cz.cz"];
+    };
 
-      hardware.pulseaudio = {
-        enable = true;
-        package = pkgs.pulseaudioFull;
-        support32Bit = true;
-        extraConfig = ''
+    hardware.pulseaudio = {
+      enable = true;
+      package = pkgs.pulseaudioFull;
+      support32Bit = true;
+      extraConfig = ''
               load-module module-switch-on-connect
-        '';
-        extraModules = [ pkgs.pulseaudio-modules-bt ];
-      };
+              unload-module module-suspend-on-idle
+      '';
+      extraModules = [ ];
+    };
 
-      hardware.opengl = {
-        enable=true;
-        extraPackages = with pkgs; [
-          vaapiIntel
-          vaapiVdpau
-          libvdpau-va-gl
-        ];
-        driSupport = true;
-        driSupport32Bit = true;
-      };
+    hardware.bluetooth = {
+      enable = true;
+      package = pkgs.bluezFull;
+    };
 
-      environment = {
-        systemPackages = [ nvidia-offload ];
-        pathsToLink = [
-          "/share/nix-direnv"
-        ];
-      };
+    hardware.opengl = {
+      enable=true;
+      extraPackages = with pkgs; [
+        vaapiIntel
+        vaapiVdpau
+        libvdpau-va-gl
+      ];
+      driSupport = true;
+      driSupport32Bit = true;
+    };
 
-      hardware.nvidia.prime = {
+    environment = {
+      systemPackages = [ nvidia-offload ];
+      pathsToLink = [
+        "/share/nix-direnv"
+      ];
+    };
+
+    hardware.nvidia.prime = {
         # sync.enable = true;
 
         offload.enable = true;
@@ -147,17 +152,22 @@ in
       longitude = 17.10;
     };
 
+
     services = {
+
+      ntp.enable = true;
 
       fprintd.enable = true; # fingerprint support
 
       cron.enable = true;
 
+      blueman.enable = true;
+
       fstrim.enable = true;
 
       flatpak.enable = true;
       batteryNotifier.enable = true; # see suspend.nix
-      localtime.enable = true;
+
       syncthing = {
         enable = true;
         dataDir = "/home/ktor/.config/syncthing";
@@ -250,7 +260,7 @@ in
 
     };
     gnome.gnome-keyring.enable = true;
-    dbus.packages = with pkgs; [ gnome3.dconf gnome2.GConf ];
+    dbus.packages = with pkgs; [ dconf ];
   };
 
 
@@ -258,8 +268,12 @@ in
 
   # Auto upgrade my system
   system.autoUpgrade.enable = false;
+  system.stateVersion = "22.05";
 
-  time.timeZone = "Europe/Bratislava";
+  time = {
+    timeZone = "Europe/Bratislava";
+    hardwareClockInLocalTime = true;
+  };
 
   console = {
     font = "Lat2-Terminus16";
@@ -297,7 +311,7 @@ in
     isNormalUser = true;
     group = "users";
     uid = 1000;
-    extraGroups = [ "autologin" "wheel" "networkmanager" "docker" "video" "lp"];
+    extraGroups = [ "autologin" "wheel" "networkmanager" "docker" "video" "lp" ];
     createHome = true;
     home = "/home/ktor";
     shell = "/run/current-system/sw/bin/bash";
