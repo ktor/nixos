@@ -1,10 +1,10 @@
 final: prev: {
   jetbrains = prev.jetbrains // {
     jdk = prev.jetbrains.jdk.overrideAttrs (oldAttrs: rec {
-      version = "17_0_2-linux-x64-b315.1";
+      version = "17.0.4.1-linux-x64-b629.2";
       src = prev.fetchurl {
-        url = "https://cache-redirector.jetbrains.com/intellij-jbr/jbr_jcef-17_0_2-linux-x64-b315.1.tar.gz";
-        sha256 = "sha256-ImnQgErO3f7lNVHSSCKaPAD3RMsK2jmdA6VWX2WI2qA=";
+        url = "https://cache-redirector.jetbrains.com/intellij-jbr/jbrsdk_jcef-${version}.tar.gz";
+        sha256 = "sha256-QwS6n4VUr+2OeAeaEa3QRar9kmpG5O+LbzQnBDkW46M=";
       };
       dontConfigure = true;
       dontStrip = true; # See: https://github.com/NixOS/patchelf/issues/10
@@ -71,10 +71,10 @@ final: prev: {
     });
     # Control the version of Intellij ourselves and add the plugin.
     idea-ultimate = prev.jetbrains.idea-ultimate.overrideAttrs (old: rec {
-      version = "2022.2.2";
+      version = "2022.2.3";
       src = prev.fetchurl {
         url = "https://download.jetbrains.com/idea/ideaIU-${version}-no-jbr.tar.gz";
-        sha256 = "zBmi7Pyzmf9KxpWikEUN3krXu0sEjgsCLTZr/XWV+4s=";
+        sha256 = "dFTX4Lj049jYBd3mRdKLhCEBvXeuqLKRJYgMWS5rjIU=";
       };
     });
   };
