@@ -39,6 +39,8 @@ let
     keybase
     keybase-gui
     alock
+    xss-lock
+    i3lock
     cacert
     cachix
   ];
@@ -52,7 +54,13 @@ let
     libnotify # lightweight notifications
     stalonetray
   ];
+  gaming= with pkgs; [
+    prismlauncher
+    minecraft-server
+  ];
   desktop= with pkgs; [
+    obsidian
+    timeular
     clementine
     qcad
     cozy
@@ -62,7 +70,6 @@ let
     xsel
     xclip
     acpilight
-    compton
     dmenu
     j4-dmenu-desktop
     gmrun
@@ -90,15 +97,14 @@ let
     hugo # static website generator
     gh # github cli client
     exercism # A Go based command line tool for exercism.io
-    # bcompare - use newer version from nix-env
-    jetbrains.idea-ultimate
+    # bcompare # - use newer version from nix-env
+    # jetbrains.idea-ultimate
     asciidoctor
     charles
     ctags
     gcc
     automake
     autoconf
-    python
     python3-with-my-packages
     groovy
     go
@@ -106,7 +112,7 @@ let
     gitAndTools.gitFull
     git-imerge # faster merge/rebase option https://softwareswirl.blogspot.com/2013/05/git-imerge-practical-introduction.html
     git-lfs
-    nodejs-16_x # global access for Intellij IDEA
+    nodejs_20 # global access for Intellij IDEA
   ];
   web= with pkgs;[
     brave
@@ -125,10 +131,10 @@ let
   office= with pkgs; [
     okular # handles pdf attachments
     ganttproject-bin
-    teams
     mime-types
     copyq
     freemind
+    freeplane # improved freemind
     calibre
     aspellDicts.ru
     aspellDicts.pl
@@ -148,6 +154,7 @@ let
     udiskie
   ];
   chat=with pkgs; [
+    whatsapp-for-linux
     skypeforlinux
     slack
     discord
@@ -156,11 +163,13 @@ let
     tdesktop
   ];
   cli=with pkgs; [
+    eza
+    audible-cli
+    wakatime
     ghostscript
     imagemagick
     zip
     czkawka # quick search for duplicate files
-    exa # alternative replacement for ls
     fd
     dos2unix
     fzf
@@ -187,6 +196,7 @@ let
     ++ chat
     ++ cli
     ++ desktop
+    ++ gaming
     ++ development
     ++ fileSystemUtilities
     ++ gnomeAppsDependencies

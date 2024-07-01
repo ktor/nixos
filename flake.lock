@@ -1,0 +1,58 @@
+{
+  "nodes": {
+    "jetbrains-updater": {
+      "inputs": {
+        "nixpkgs": "nixpkgs"
+      },
+      "locked": {
+        "lastModified": 1680566576,
+        "narHash": "sha256-V9FO7SC4JqMqaAT7qSd7N5/I3pgRFApjhYwKva26UYI=",
+        "owner": "genericnerdyusername",
+        "repo": "jetbrains-updater",
+        "rev": "38c1c67f63f378bd036405ba201d2057ebf6e822",
+        "type": "gitlab"
+      },
+      "original": {
+        "owner": "genericnerdyusername",
+        "repo": "jetbrains-updater",
+        "type": "gitlab"
+      }
+    },
+    "nixpkgs": {
+      "locked": {
+        "lastModified": 1680577567,
+        "narHash": "sha256-Y4W57i0TzczqwMTjfVSbAZT5RJx7u+mpQIW/ofrkTQs=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "b01f185e4866de7c5b5a82f833ca9ea3c3f72fc4",
+        "type": "github"
+      },
+      "original": {
+        "id": "nixpkgs",
+        "type": "indirect"
+      }
+    },
+    "nixpkgs_2": {
+      "locked": {
+        "lastModified": 1680577567,
+        "narHash": "sha256-Y4W57i0TzczqwMTjfVSbAZT5RJx7u+mpQIW/ofrkTQs=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "b01f185e4866de7c5b5a82f833ca9ea3c3f72fc4",
+        "type": "github"
+      },
+      "original": {
+        "id": "nixpkgs",
+        "type": "indirect"
+      }
+    },
+    "root": {
+      "inputs": {
+        "jetbrains-updater": "jetbrains-updater",
+        "nixpkgs": "nixpkgs_2"
+      }
+    }
+  },
+  "root": "root",
+  "version": 7
+}
