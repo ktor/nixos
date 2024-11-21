@@ -2,8 +2,6 @@
 {
 
   environment.systemPackages = with pkgs; [
-    adoptopenjdk-hotspot-bin-8
-    jdk11
     jmeter
     visualvm
     maven

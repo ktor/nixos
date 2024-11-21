@@ -9,4 +9,7 @@ self: super:
   maven17 = super.maven.override {
     jdk = self.jdk17;
   };
+  maven21 = super.maven.override {
+    jdk = self.jdk21;
+  };
 }

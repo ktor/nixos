@@ -2,6 +2,14 @@
 {
   environment.systemPackages = with pkgs; [
     (pkgs.buildFHSUserEnv {
+      name = "jdk21";
+      targetPkgs = pkgs: (with pkgs; [  maven21 gradle jdk21 gnumake zlib zlib libGL gitAndTools.gitFull bash-completion bash direnv ]) ++ (with pkgs.xorg; [ libXi libXxf86vm libX11 ]);
+      multiPkgs = pkgs: (with pkgs; [ ]);
+      runScript = ''
+        env SHELL_NAME="jdk21" bash --rcfile <(cat /home/ktor/.bashrc; echo 'source "${pkgs.gitAndTools.gitFull}/share/git/contrib/completion/git-completion.bash"; source "${pkgs.gitAndTools.gitFull}/share/git/contrib/completion/git-prompt.sh";')
+      '';
+    })
+    (pkgs.buildFHSUserEnv {
       name = "jdk17";
       targetPkgs = pkgs: (with pkgs; [  maven17 gradle jdk17 gnumake zlib zlib libGL gitAndTools.gitFull bash-completion bash direnv ]) ++ (with pkgs.xorg; [ libXi libXxf86vm libX11 ]);
       multiPkgs = pkgs: (with pkgs; [ ]);

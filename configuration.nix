@@ -1,13 +1,7 @@
 { config, lib, pkgs, options, modulesPath, ... }:
+
 let
-  startWebcam = import ./start-webcam.nix;
-  nvidia-offload = pkgs.writeShellScriptBin "nvidia-offload" ''
-    export __NV_PRIME_RENDER_OFFLOAD=1
-    export __NV_PRIME_RENDER_OFFLOAD_PROVIDER=NVIDIA-G0
-    export __GLX_VENDOR_LIBRARY_NAME=nvidia
-    export __VK_LAYER_NV_optimus=NVIDIA_only
-    exec -a "$0" "$@"
-  '';
+  # startWebcam = import ./start-webcam.nix;
   pr = import (builtins.fetchTarball https://github.com/NixOS/nixpkgs/archive/refs/heads/master.zip)
     # reuse the current configuration
     { config = config.nixpkgs.config; };
@@ -15,7 +9,9 @@ in
   {
     imports = [
       # Include the results of the hardware scan.
-      ./probook.nix
+      ./nvidia.nix
+      ./hardware-configuration.nix
+      #./probook.nix
       ./keybase.nix
       ./workstation-packages.nix
       ./pki.nix
@@ -23,11 +19,12 @@ in
       ./suspend.nix
       ./shell.nix
       ./wine.nix
+      <home-manager/nixos>
     ];
 
 
     boot = {
-      loader.systemd-boot.enable = true; # (for UEFI systems only)
+      loader.systemd-boot.enable = true;
 
       extraModulePackages = with config.boot.kernelPackages; [ v4l2loopback.out ];
 
@@ -46,18 +43,11 @@ in
       supportedFilesystems = [ "ntfs" "exfat" ];
     };
 
-    fileSystems."/boot".device = "/dev/disk/by-label/boot";
-    fileSystems."/home/ktor/development" = {
-      fsType = "ext4";
-      device = "/dev/disk/by-label/development";
-      options = ["rw" "user" "exec"];
-    };
-
-    swapDevices = [ { device = "/dev/disk/by-label/swap"; } ];
+    swapDevices = [ { device = "/swapfile"; size = 64*1024; } ]; # size is in MB
 
     networking = {
       networkmanager.enable = true;
-      hostName = "probook";
+      hostName = "zbook";
 
       firewall = {
         allowedTCPPorts = [ 80 443 8081 631 25565 27036 27037 ];
@@ -67,12 +57,6 @@ in
           127.0.0.1 mock.sk.o2 www.sk.o2 o2static.sk.o2 local.admin.sk.o2 local.sk.o2 local.o2static.sk.o2 asistent.sk.o2 local.asistent.sk.o2 testeshop.tescomobile.sk.o2 npm.lukreo.com local.lukreo.com my.local.lukreo.com local.lukreo.pl moje.local.lukreo.pl local.com.liferay local.portal.vse.sk local.threat.sk.o2security local.botnet.sk.o2security local.filter.sk.o2security local.test.filter.com local.test.botnet.com local.test.threat.com
       '');
 
-         # ${
-         #   let
-         #     hostsPath = https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews-gambling-porn/hosts;
-         #     hostsFile = builtins.fetchurl hostsPath;
-         #   in builtins.readFile "${hostsFile}"
-         # }
          nameservers = ["1.1.1.1" "1.0.0.1"];
          search = ["to2.to2cz.cz" "ux.to2sk.sk" "ux.to2cz.cz"];
        };
@@ -90,17 +74,6 @@ in
        hardware.bluetooth = {
          enable = true;
          package = pkgs.bluez;
-       };
-
-       hardware.opengl = {
-         enable=true;
-         extraPackages = with pkgs; [
-           vaapiIntel
-           vaapiVdpau
-           libvdpau-va-gl
-         ];
-         driSupport = true;
-         driSupport32Bit = true;
        };
 
        environment = {
@@ -124,7 +97,7 @@ in
             system = builtins.currentSystem;
           };
          systemPackages = [
-           nvidia-offload
+           pkgs.kdiskmark
            (pr.jetbrains.plugins.addPlugins pr.jetbrains.idea-ultimate [ "github-copilot" ])
            pkgs.ffmpeg
            pkgs.gphoto2
@@ -138,29 +111,14 @@ in
            "jdk8".source = adoptopenjdk-hotspot-bin-8;
            "jdk11".source = jdk11;
            "jdk17".source = jdk17;
+           "jdk21".source = jdk21;
            "groovy".source = groovy;
          };
        };
 
-       hardware.nvidia.modesetting.enable = true;
-       hardware.nvidia.prime = {
-        # sync.enable = true;
-
-        offload.enable = true;
-
-        # Bus ID of the NVIDIA GPU. You can find it using lspci, either under 3D or VGA
-        nvidiaBusId = "PCI:1:0:0";
-
-        # Bus ID of the Intel GPU. You can find it using lspci, either under 3D or VGA
-        intelBusId = "PCI:0:2:0";
-      };
-
-      hardware.cpu.intel.updateMicrocode = true;
-
       powerManagement = {
         enable = true;
       };
-
 
       fonts.packages = with pkgs; [
         nerdfonts # very nice coding fonts with icon/powerline support
@@ -175,11 +133,6 @@ in
         allowUnfreeRedistributable = true;
         allowBroken = true;
         permittedInsecurePackages = [
-          "electron-25.9.0"
-          "qtwebkit-5.212.0-alpha4"
-          "nodejs-14.21.3"
-          "openssl-1.1.1u"
-          "openssl-1.1.1v"
         ];
       };
       overlays = (import ./overlays); # ++ [ jetbrains-updater.overlay ];
@@ -226,13 +179,13 @@ in
         };
       };
 
-      udev.extraRules = ''
-          ACTION=="add",  \
-          SUBSYSTEM=="usb", \
-          ATTR{idVendor}=="04b0", \
-          ATTR{idProduct}=="0433",  \
-          RUN+="${startWebcam}/bin/start-webcam"
-      '';
+#      udev.extraRules = ''
+#          ACTION=="add",  \
+#          SUBSYSTEM=="usb", \
+#          ATTR{idVendor}=="04b0", \
+#          ATTR{idProduct}=="0433",  \
+#          RUN+="${startWebcam}/bin/start-webcam"
+#      '';
 
       gvfs.enable = true;
 
@@ -319,7 +272,6 @@ in
       
     xserver = {
       enable = true;
-      # synaptics.enable = true; # touchpad
 
       videoDrivers = [ "nvidia" ];
 
@@ -357,7 +309,7 @@ in
 
   # Auto upgrade my system
   system.autoUpgrade.enable = false;
-  system.stateVersion = "22.05";
+  system.stateVersion = "24.05";
 
   time = {
     timeZone = "Europe/Bratislava";
@@ -396,6 +348,7 @@ in
     };
   };
 
+
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.extraUsers.ktor= {
     isNormalUser = true;
@@ -404,6 +357,44 @@ in
     extraGroups = [ "autologin" "wheel" "networkmanager" "docker" "video" "lp" ];
     createHome = true;
     home = "/home/ktor";
+    shell = "/run/current-system/sw/bin/bash";
+  };
+
+  home-manager.users.ktor = {pkgs, ...}: {
+    home.stateVersion = "24.05";
+
+    home.pointerCursor = 
+      let 
+        getFrom = url: hash: name: {
+            gtk.enable = true;
+            x11.enable = true;
+            name = name;
+            size = 24;
+            package = 
+              pkgs.runCommand "moveUp" {} ''
+                mkdir -p $out/share/icons
+                ln -s ${pkgs.fetchzip {
+                  url = url;
+                  hash = hash;
+                }} $out/share/icons/${name}
+            '';
+          };
+      in
+        getFrom 
+          "https://github.com/ful1e5/fuchsia-cursor/releases/download/v2.0.0/Fuchsia-Pop.tar.gz"
+          "sha256-BvVE9qupMjw7JRqFUj1J0a4ys6kc9fOLBPx2bGaapTk="
+          "Fuchsia-Pop";
+  };
+
+
+  # Define a user account. Don't forget to set a password with ‘passwd’.
+  users.extraUsers.adam = {
+    isNormalUser = true;
+    group = "users";
+    uid = 1001;
+    extraGroups = [ "autologin" "wheel" "networkmanager" "video" "lp" ];
+    createHome = true;
+    home = "/home/adam";
     shell = "/run/current-system/sw/bin/bash";
   };
 

@@ -130,6 +130,7 @@ let
   ];
   office= with pkgs; [
     okular # handles pdf attachments
+    evince
     ganttproject-bin
     mime-types
     copyq
@@ -191,6 +192,7 @@ let
   network=with pkgs; [
     soapui
     inetutils # telnet
+    kubectl
   ];
   allPackages = archiving
     ++ chat
