@@ -164,6 +164,8 @@ let
     tdesktop
   ];
   cli=with pkgs; [
+    pciutils
+    lshw
     eza
     audible-cli
     wakatime
