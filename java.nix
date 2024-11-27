@@ -18,11 +18,4 @@
     })
   ];
 
-  nixpkgs.config = {
-    allowUnfree = true;
-    allowUnfreeRedistributable = true;
-    # oraclejdk.accept_license = true;
-    # oraclejdk.pluginSupport = true;
-  };
-
 }
