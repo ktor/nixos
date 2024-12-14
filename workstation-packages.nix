@@ -33,7 +33,7 @@ let
     unzip
   ];
   security=with pkgs;[
-    keysmith
+    libsForQt5.kdeGear.keysmith
     gnupg
     keepassxc
     keybase
@@ -86,10 +86,10 @@ let
     xorg.xkbcomp
   ];
   gnomeAppsDependencies = with pkgs; [
-    gnome3.gnome-keyring
-    gnome3.seahorse
+    gnome-keyring
+    seahorse
     dconf
-    gnome3.pomodoro
+    pomodoro
   ];
   development= with pkgs; [
     difftastic
@@ -97,7 +97,7 @@ let
     hugo # static website generator
     gh # github cli client
     exercism # A Go based command line tool for exercism.io
-    # bcompare # - use newer version from nix-env
+    bcompare # - use newer version from nix-env
     # jetbrains.idea-ultimate
     asciidoctor
     charles

@@ -26,8 +26,16 @@
       '';
     })
     (pkgs.buildFHSUserEnv {
+      name = "jdk8";
+      targetPkgs = pkgs: (with pkgs; [ p11-kit maven8 gradle jdk8 gnumake zlib zlib libGL gitAndTools.gitFull bash-completion bash direnv ]) ++ (with pkgs.xorg; [ libXi libXxf86vm libX11 ]);
+      multiPkgs = pkgs: (with pkgs; [ ]);
+      runScript = ''
+        env SHELL_NAME="jdk11" bash --rcfile <(cat /home/ktor/.bashrc; echo 'source "${pkgs.gitAndTools.gitFull}/share/git/contrib/completion/git-completion.bash"; source "${pkgs.gitAndTools.gitFull}/share/git/contrib/completion/git-prompt.sh";')
+      '';
+    })
+    (pkgs.buildFHSUserEnv {
       name = "node18";
-      targetPkgs = pkgs: (with pkgs; [ gradle adoptopenjdk-hotspot-bin-8 gnumake zlib zlib libGL gitAndTools.gitFull bash-completion bash direnv nodejs_18 ]) ++ (with pkgs.xorg; [ libXi libXxf86vm libX11 ]);
+      targetPkgs = pkgs: (with pkgs; [ gradle temurin-bin-8 gnumake zlib zlib libGL gitAndTools.gitFull bash-completion bash direnv nodejs_18 ]) ++ (with pkgs.xorg; [ libXi libXxf86vm libX11 ]);
       multiPkgs = pkgs: (with pkgs; [ ]);
       runScript = ''
         env SHELL_NAME="node18" bash --rcfile <(cat /home/ktor/.bashrc; echo 'source "${pkgs.gitAndTools.gitFull}/share/git/contrib/completion/git-completion.bash"; source "${pkgs.gitAndTools.gitFull}/share/git/contrib/completion/git-prompt.sh";')
@@ -35,7 +43,7 @@
     })
     (pkgs.buildFHSUserEnv {
       name = "node20";
-      targetPkgs = pkgs: (with pkgs; [ gradle adoptopenjdk-hotspot-bin-8 gnumake zlib zlib libGL gitAndTools.gitFull bash-completion bash direnv nodejs_20 watchman]) ++ (with pkgs.xorg; [ libXi libXxf86vm libX11 ]);
+      targetPkgs = pkgs: (with pkgs; [ gradle temurin-bin-8 gnumake zlib zlib libGL gitAndTools.gitFull bash-completion bash direnv nodejs_20 watchman]) ++ (with pkgs.xorg; [ libXi libXxf86vm libX11 ]);
       multiPkgs = pkgs: (with pkgs; [ ]);
       runScript = ''
         env SHELL_NAME="node20" bash --rcfile <(cat /home/ktor/.bashrc; echo 'source "${pkgs.gitAndTools.gitFull}/share/git/contrib/completion/git-completion.bash"; source "${pkgs.gitAndTools.gitFull}/share/git/contrib/completion/git-prompt.sh";')

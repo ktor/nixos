@@ -1,7 +1,6 @@
 { config, lib, pkgs, options, modulesPath, ... }:
 
 let
-  # startWebcam = import ./start-webcam.nix;
   pr = import (builtins.fetchTarball https://github.com/NixOS/nixpkgs/archive/refs/heads/master.zip)
     # reuse the current configuration
     { config = config.nixpkgs.config; };
@@ -11,7 +10,6 @@ in
       # Include the results of the hardware scan.
       ./nvidia.nix
       ./hardware-configuration.nix
-      #./probook.nix
       ./keybase.nix
       ./workstation-packages.nix
       ./pki.nix
@@ -19,22 +17,10 @@ in
       ./suspend.nix
       ./shell.nix
       ./wine.nix
-      <home-manager/nixos>
     ];
-
 
     boot = {
       loader.systemd-boot.enable = true;
-
-      extraModulePackages = with config.boot.kernelPackages; [ v4l2loopback.out ];
-
-      kernelModules = [
-        "v4l2loopback"
-      ];
-
-      extraModprobeConfig = ''
-        options v4l2loopback exclusive_caps=1 card_label="Virtual Camera"
-      '';
 
       kernel.sysctl = {
         "vm.max_map_count" = 262144;
@@ -46,7 +32,11 @@ in
     swapDevices = [ { device = "/swapfile"; size = 64*1024; } ]; # size is in MB
 
     networking = {
-      networkmanager.enable = true;
+      networkmanager = {
+        enable = true;
+      };
+      wireless.enable = false;
+
       hostName = "zbook";
 
       firewall = {
@@ -54,22 +44,12 @@ in
         allowedUDPPorts = [ 631 27031 27036 ];
       };
       extraHosts = (''
-          127.0.0.1 mock.sk.o2 www.sk.o2 o2static.sk.o2 local.admin.sk.o2 local.sk.o2 local.o2static.sk.o2 asistent.sk.o2 local.asistent.sk.o2 testeshop.tescomobile.sk.o2 npm.lukreo.com local.lukreo.com my.local.lukreo.com local.lukreo.pl moje.local.lukreo.pl local.com.liferay local.portal.vse.sk local.threat.sk.o2security local.botnet.sk.o2security local.filter.sk.o2security local.test.filter.com local.test.botnet.com local.test.threat.com
+          127.0.0.1 npm.lukreo.com local.lukreo.com my.local.lukreo.com local.lukreo.pl moje.local.lukreo.pl local.com.liferay local.portal.vse.sk
       '');
 
-         nameservers = ["1.1.1.1" "1.0.0.1"];
-         search = ["to2.to2cz.cz" "ux.to2sk.sk" "ux.to2cz.cz"];
-       };
-
-       hardware.pulseaudio = {
-         enable = true;
-         package = pkgs.pulseaudioFull;
-         support32Bit = true;
-         extraConfig = ''
-              load-module module-switch-on-connect
-         '';
-         extraModules = [ ];
-       };
+      # These options are unnecessary when managing DNS ourselves
+      nameservers = ["1.1.1.1" "1.0.0.1" "8.8.8.8" "8.8.4.4"];
+    };
 
        hardware.bluetooth = {
          enable = true;
@@ -77,25 +57,25 @@ in
        };
 
        environment = {
-        variables.JAVAX_NET_SSL_TRUSTSTORE =
-          let
-            caBundle = config.environment.etc."ssl/certs/ca-certificates.crt".source;
-            p11kit = pkgs.p11-kit.overrideAttrs (oldAttrs: {
-              configureFlags = [
-                "--with-trust-paths=${caBundle}"
-              ];
-            });
-          in derivation {
-            name = "java-cacerts";
-            builder = pkgs.writeShellScript "java-cacerts-builder" ''
-              ${p11kit.bin}/bin/trust \
-                extract \
-                --format=java-cacerts \
-                --purpose=server-auth \
-                $out
-            '';
-            system = builtins.currentSystem;
-          };
+        #variables.JAVAX_NET_SSL_TRUSTSTORE =
+        #  let
+        #    caBundle = config.environment.etc."ssl/certs/ca-certificates.crt".source;
+        #    p11kit = pkgs.p11-kit.overrideAttrs (oldAttrs: {
+        #      configureFlags = [
+        #        "--with-trust-paths=${caBundle}"
+        #      ];
+        #    });
+        #  in derivation {
+        #    name = "java-cacerts";
+        #    builder = pkgs.writeShellScript "java-cacerts-builder" ''
+        #      ${p11kit.bin}/bin/trust \
+        #        extract \
+        #        --format=java-cacerts \
+        #        --purpose=server-auth \
+        #        $out
+        #    '';
+        #    system = builtins.currentSystem;
+        #  };
          systemPackages = [
            pkgs.kdiskmark
            (pr.jetbrains.plugins.addPlugins pr.jetbrains.idea-ultimate [ "github-copilot" ])
@@ -108,7 +88,7 @@ in
          ];
          etc = with pkgs; {
            "jdk".source = jdk;
-           "jdk8".source = adoptopenjdk-hotspot-bin-8;
+           "jdk8".source = temurin-bin-8;
            "jdk11".source = jdk11;
            "jdk17".source = jdk17;
            "jdk21".source = jdk21;
@@ -178,14 +158,6 @@ in
            turbo = "auto";
         };
       };
-
-#      udev.extraRules = ''
-#          ACTION=="add",  \
-#          SUBSYSTEM=="usb", \
-#          ATTR{idVendor}=="04b0", \
-#          ATTR{idProduct}=="0433",  \
-#          RUN+="${startWebcam}/bin/start-webcam"
-#      '';
 
       gvfs.enable = true;
 
@@ -329,7 +301,7 @@ in
     libvirtd.enable = true;
     docker = {
       enable = true;
-      extraOptions = "--bip 172.200.0.1/16 --ip-masq=true --iptables=true --insecure-registry docker.devlab.sk.o2";
+      extraOptions = "--bip 172.200.0.1/16 --ip-masq=true --iptables=true";
     };
   };
 
@@ -360,32 +332,6 @@ in
     shell = "/run/current-system/sw/bin/bash";
   };
 
-  home-manager.users.ktor = {pkgs, ...}: {
-    home.stateVersion = "24.05";
-
-    home.pointerCursor = 
-      let 
-        getFrom = url: hash: name: {
-            gtk.enable = true;
-            x11.enable = true;
-            name = name;
-            size = 24;
-            package = 
-              pkgs.runCommand "moveUp" {} ''
-                mkdir -p $out/share/icons
-                ln -s ${pkgs.fetchzip {
-                  url = url;
-                  hash = hash;
-                }} $out/share/icons/${name}
-            '';
-          };
-      in
-        getFrom 
-          "https://github.com/ful1e5/fuchsia-cursor/releases/download/v2.0.0/Fuchsia-Pop.tar.gz"
-          "sha256-BvVE9qupMjw7JRqFUj1J0a4ys6kc9fOLBPx2bGaapTk="
-          "Fuchsia-Pop";
-  };
-
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.extraUsers.adam = {
@@ -406,7 +352,7 @@ in
 
     # shell
     bash = {
-      enableCompletion = true;
+      completion.enable = true;
 
       # Show git info in bash prompt and display a colorful hostname if using ssh.
       promptInit = ''
@@ -432,15 +378,6 @@ in
     serviceConfig.Restart = "always";
     serviceConfig.RestartSec = 2;
     serviceConfig.ExecStart = "${pkgs.udiskie}/bin/udiskie";
-  };
-
-  systemd.services.webcam = {
-    enable = true;
-    script = ''
-      ${pkgs.gphoto2}/bin/gphoto2 --stdout --capture-movie |
-        ${pkgs.ffmpeg}/bin/ffmpeg -i - \
-            -vcodec rawvideo -pix_fmt yuv420p -f v4l2  /dev/video0
-    '';
   };
 
 }

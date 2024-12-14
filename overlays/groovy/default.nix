@@ -1,6 +1,6 @@
 self: super: 
 {
   groovy = super.groovy.override {
-    jdk = self.adoptopenjdk-hotspot-bin-8;
+    jdk = self.temurin-bin-8;
   };
 }
